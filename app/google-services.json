@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1090723848934",
+    "project_id": "calmacar",
+    "storage_bucket": "calmacar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090723848934:android:8eec7035c1f054f0aa1127",
+        "android_client_info": {
+          "package_name": "com.example.calmacar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1090723848934-bv1u5i6c9ug6mikkfc2m0tju4gjo43bg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWJ9vDcLuPpudOAQK7YZSvd9KZ9rPV2cw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1090723848934-bv1u5i6c9ug6mikkfc2m0tju4gjo43bg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

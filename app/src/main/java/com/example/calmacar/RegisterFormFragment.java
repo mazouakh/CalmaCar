@@ -74,10 +74,10 @@ public class RegisterFormFragment extends Fragment {
         // Hooks
         btn_signup = view.findViewById(R.id.btn_signup);
         tv_alreadyMember = view.findViewById(R.id.tv_alreadyMember);
-        et_lastname = view.findViewById(R.id.input_nom);
-        et_firstname = view.findViewById(R.id.input_prenom);
-        et_email = view.findViewById(R.id.input_email);
-        et_password = view.findViewById(R.id.input_password);
+        et_lastname = view.findViewById(R.id.et_lastname);
+        et_firstname = view.findViewById(R.id.et_firstname);
+        et_email = view.findViewById(R.id.et_email);
+        et_password = view.findViewById(R.id.et_password);
 
         // Click listeners
         btn_signup.setOnClickListener(new View.OnClickListener() {
@@ -98,22 +98,21 @@ public class RegisterFormFragment extends Fragment {
 
     public void onInscriptionButtonClicked(View view) {
         // validate the form
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
         if (!validator.isLastnameValid(et_lastname) |
             !validator.isFirstnameValid(et_firstname) |
             !validator.isEmailValid(et_email) |
             !validator.isPasswordValid(et_password))
             return;
-        // check if user already exists
 
-        // send data to database
-        Toast.makeText(view.getContext(), "Inscription en cours...", Toast.LENGTH_SHORT).show();
+        // Send data to auth activity
+        Intent signupIntent = new Intent("DATA_SIGNUP");
+        signupIntent.putExtra("EXTRA_LASTNAME", et_lastname.getText().toString().trim());
+        signupIntent.putExtra("EXTRA_FIRSTNAME", et_firstname.getText().toString().trim());
+        signupIntent.putExtra("EXTRA_EMAIL", et_email.getText().toString().trim());
+        signupIntent.putExtra("EXTRA_PASSWORD", et_password.getText().toString().trim());
+        getActivity().sendBroadcast(signupIntent);
 
-        // login the new user
-
-        // redirect to Driver Dashboard
-        Intent intent = new Intent(this.getContext(), HomeActivity.class);
-        this.startActivity(intent);
     }
     public void onAlreadyMember(View view) {
         ((AuthActivity)this.getActivity()).LoadLoginForm();

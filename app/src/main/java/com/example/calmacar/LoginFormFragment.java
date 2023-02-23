@@ -1,8 +1,11 @@
 package com.example.calmacar;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -98,21 +101,16 @@ public class LoginFormFragment extends Fragment {
 
     public void onLoginButtonClicked(View view) {
         // validate the form
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
         if (!validator.isEmailValid(et_email) |
         !validator.isPasswordValid(et_password)) {
             return;
         }
-        // check if user already exists
-
-        // compare input with the credentials in the database
-
-        // login the new user
-        Toast.makeText(view.getContext(), "Connexion en cours...", Toast.LENGTH_SHORT).show();
-
-        // redirect to Driver Dashboard
-        Intent intent = new Intent(this.getContext(), HomeActivity.class);
-        this.startActivity(intent);
+        // Send data to auth activity
+        Intent loginIntent = new Intent("DATA_LOGIN");
+        loginIntent.putExtra("EXTRA_EMAIL", et_email.getText().toString().trim());
+        loginIntent.putExtra("EXTRA_PASSWORD", et_password.getText().toString().trim());
+        getActivity().sendBroadcast(loginIntent);
     }
 
 

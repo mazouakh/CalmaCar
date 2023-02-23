@@ -13,6 +13,14 @@ public class Validator {
 
     public Validator(){}
 
+    static Validator instance;
+    public static Validator getInstance(){
+        if (instance == null){
+            instance = new Validator();
+        }
+        return instance;
+    }
+
     /**
      * Checks if the last name is valid, ie: not empty
      * @param et_lastname The EditText that contains the value
