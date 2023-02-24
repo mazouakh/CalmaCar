@@ -19,10 +19,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,16 +33,21 @@ public class AuthActivity extends AppCompatActivity {
     TextView title;
     String userType;
 
+    FirebaseAuth authProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        // References
-        title = findViewById(R.id.textView_title);
+        // Hooks
+        title = findViewById(R.id.tv_title);
+
+        // Firebase
+        authProfile = FirebaseAuth.getInstance();
 
         // Set the title of the activity based on user type
-        userType = getIntent().getStringExtra("EXTRA_USER_TYPE");
+        userType = getIntent().getStringExtra("EXTRA_USERTYPE");
         if (userType != null)
             title.setText(userType.toUpperCase());
         else
@@ -143,7 +150,7 @@ public class AuthActivity extends AppCompatActivity {
                                    .build());
 
                            // Create a new instance of User
-                            User newUser = new User(firebaseUser.getUid(), firstname, lastname);
+                            User newUser = new User(firebaseUser.getUid(), firstname, lastname, userType);
 
                            // Get the Registered Users table reference from the database
                            DatabaseReference usersReference = FirebaseDatabase
@@ -168,7 +175,7 @@ public class AuthActivity extends AppCompatActivity {
                                    firebaseUser.sendEmailVerification();
                                    Toast.makeText(AuthActivity.this, "Registration successful. Please verify your email.", Toast.LENGTH_SHORT).show();
                                    // Redirect to user dashboard
-                                   redirectToDashboard();
+                                   redirectToDashboard(userType);
                                }
                            });
                        }
@@ -176,25 +183,76 @@ public class AuthActivity extends AppCompatActivity {
             );
     }
 
-    //TODO
     public void LoginUser(Bundle extras){
         String email = extras.getString("EXTRA_EMAIL");
         String password = extras.getString("EXTRA_PASSWORD");
         
-        // check if user already exists
+        // Firebase Login
+        authProfile.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()){
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthInvalidUserException e){
+                        EditText et_email = getSupportFragmentManager()
+                                .findFragmentById(R.id.frag_auth_form)
+                                .getView()
+                                .findViewById(R.id.et_email);
+                        et_email.setError("No user found with this email");
+                        et_email.requestFocus();
+                    } catch (FirebaseAuthInvalidCredentialsException e){
+                        EditText et_password = getSupportFragmentManager()
+                                .findFragmentById(R.id.frag_auth_form)
+                                .getView()
+                                .findViewById(R.id.et_password);
+                        et_password.setError("The password you entered in not correct. Try again.");
+                        et_password.requestFocus();
+                    } catch (Exception e){
+                        Toast.makeText(AuthActivity.this, "Login failed with error : " + e, Toast.LENGTH_SHORT).show();
+                    }
+                    return;
+                }
+                // At this point login is successful
+                Toast.makeText(AuthActivity.this, "Connexion avec success", Toast.LENGTH_SHORT).show();
 
-        // compare input with the credentials in the database
+                // Check if the user is logging in in the category that he is signed up to
+                /*
+                // Get the Registered Users table reference from the database
+                DatabaseReference usersReference = FirebaseDatabase
+                        .getInstance("https://calmacar-default-rtdb.europe-west1.firebasedatabase.app")
+                        .getReference("Registered Users");
+                usersReference.child(authProfile.getUid()).child("userType").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        String firebaseUserType = task.getResult().getValue(String.class);
 
-        // login the new user
-        Toast.makeText(this, "Connexion en cours...", Toast.LENGTH_SHORT).show();
+                        // if user is registered but not in the currently chosen subscription type
+                        if (!firebaseUserType.equals(userType)){
+                            Toast.makeText(AuthActivity.this,
+                                    "Vous n'etes pas inscrit en tant que "
+                                            + userType + ".\n"
+                                            + "Veuillez retourner et choisir la bonne categorie ou vous inscrire en tant que "
+                                            + userType + ".",
+                                    Toast.LENGTH_LONG).show();
+                            authProfile.signOut();
+                            return;
+                        }
 
-        // redirect to Driver Dashboard
-        redirectToDashboard();
+                        // redirect to Driver Dashboard
+                        redirectToDashboard(firebaseUserType);
+                    }
+                });*/
+
+                redirectToDashboard(userType);
+            }
+        });
     }
 
-    private void redirectToDashboard(){
+    private void redirectToDashboard(String userType){
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("EXTRA_USERTYPE", userType);
         this.startActivity(intent);
         finish();
     }

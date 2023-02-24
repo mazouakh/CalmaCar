@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     * */
     private void LoadAuthActivity(String userType) {
         Intent intent = new Intent(this, AuthActivity.class);
-        intent.putExtra("EXTRA_USER_TYPE", userType);
+        intent.putExtra("EXTRA_USERTYPE", userType);
         this.startActivity(intent);
     }
 }
