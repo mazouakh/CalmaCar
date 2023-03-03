@@ -1,12 +1,14 @@
 package com.example.calmacar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -76,6 +78,16 @@ public class AuthActivity extends AppCompatActivity {
             }
         };
         registerReceiver(signupReceiver, signupFilter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check if user is already logged then, then redirect to dashboard directly and kill AuthActivity
+        if (authProfile.getCurrentUser() == null)
+            return;
+        redirectToDashboard(userType);
+        finish();
     }
 
     public void LoadRegisterForm(){
@@ -214,7 +226,16 @@ public class AuthActivity extends AppCompatActivity {
                     return;
                 }
                 // At this point login is successful
-                Toast.makeText(AuthActivity.this, "Connexion avec success", Toast.LENGTH_SHORT).show();
+
+                // Getting current user
+                FirebaseUser firebaseUser = authProfile.getCurrentUser();
+                // Check that his email is verified
+                if (!firebaseUser.isEmailVerified()){
+                    firebaseUser.sendEmailVerification();
+                    authProfile.signOut();
+                    showEmailNotVerifiedAlertDialogue();
+                    return;
+                }
 
                 // Check if the user is logging in in the category that he is signed up to
                 /*
@@ -244,9 +265,46 @@ public class AuthActivity extends AppCompatActivity {
                     }
                 });*/
 
+                // All went well
+                Toast.makeText(AuthActivity.this, "Connexion avec success", Toast.LENGTH_SHORT).show();
                 redirectToDashboard(userType);
             }
         });
+    }
+
+    private void showEmailNotVerifiedAlertDialogue() {
+        // Crating the builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(AuthActivity.this);
+        builder.setTitle("Email non verifié");
+        builder.setMessage("Vous n'avez pas verifié votre adresse email. " +
+                "Par mesure de securité seul les utilisateus verifirés peuvent utiliser l'application.\n" +
+                "Nous venons de vous envoyer un mail de verification, veuillez suivre les inscrutions puis revenir une fois cela fait.\n\n" +
+                "On vous attend!");
+
+        // Open email app if user button
+        builder.setPositiveButton("Continuer", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent,"Open Email App: "));
+            }
+        });
+
+        // Return to main menu button
+        builder.setNegativeButton("Retour", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        // Create & show the AlertDialog
+        builder.create().show();
+
     }
 
     private void redirectToDashboard(String userType){

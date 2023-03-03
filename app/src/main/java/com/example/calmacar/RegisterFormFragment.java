@@ -5,11 +5,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ public class RegisterFormFragment extends Fragment {
     Button btn_signup;
     TextView tv_alreadyMember;
     EditText et_lastname, et_firstname, et_email, et_password;
+    ImageView img_ic_pwd;
 
     public RegisterFormFragment() {
         // Required empty public constructor
@@ -78,6 +82,7 @@ public class RegisterFormFragment extends Fragment {
         et_firstname = view.findViewById(R.id.et_firstname);
         et_email = view.findViewById(R.id.et_email);
         et_password = view.findViewById(R.id.et_password);
+        img_ic_pwd = view.findViewById(R.id.img_ic_pwd);
 
         // Click listeners
         btn_signup.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +95,24 @@ public class RegisterFormFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onAlreadyMember(view);
+            }
+        });
+
+        img_ic_pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (et_password.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                    // if password is visible then hide it
+                    et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    // change icon
+                    img_ic_pwd.setImageResource(R.drawable.ic_eye_closed);
+
+                }else {
+                    // if password is hidden then show it
+                    et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    // change icon
+                    img_ic_pwd.setImageResource(R.drawable.ic_eye_opened);
+                }
             }
         });
 

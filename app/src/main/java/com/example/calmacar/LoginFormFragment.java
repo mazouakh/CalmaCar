@@ -8,11 +8,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ public class LoginFormFragment extends Fragment {
     Button btn_login;
     TextView tv_notMember;
     EditText et_email, et_password;
+    ImageView img_ic_pwd;
 
     public LoginFormFragment() {
         // Required empty public constructor
@@ -79,6 +83,7 @@ public class LoginFormFragment extends Fragment {
         tv_notMember = view.findViewById(R.id.tv_notMember);
         et_email = view.findViewById(R.id.et_email);
         et_password = view.findViewById(R.id.et_password);
+        img_ic_pwd = view.findViewById(R.id.img_ic_pwd);
 
 
         // Click Listeners
@@ -93,6 +98,24 @@ public class LoginFormFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onNotMember(view);
+            }
+        });
+
+        img_ic_pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (et_password.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                    // if password is visible then hide it
+                    et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    // change icon
+                    img_ic_pwd.setImageResource(R.drawable.ic_eye_closed);
+
+                }else {
+                    // if password is hidden then show it
+                    et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    // change icon
+                    img_ic_pwd.setImageResource(R.drawable.ic_eye_opened);
+                }
             }
         });
 

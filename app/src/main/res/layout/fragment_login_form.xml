@@ -39,13 +39,27 @@
             android:inputType="textEmailAddress"
             android:hint="Email"/>
 
-        <EditText
-            android:id="@+id/et_password"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginVertical="10dp"
-            android:inputType="textPassword"
-            android:hint="Mot de passe"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="50dp"
+                android:layout_marginVertical="10dp"
+                android:inputType="textPassword"
+                android:hint="Mot de passe"/>
+            <ImageView
+                android:id="@+id/img_ic_pwd"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_eye_closed"/>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_login"

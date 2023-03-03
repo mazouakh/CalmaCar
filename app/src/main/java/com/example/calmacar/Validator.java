@@ -58,7 +58,7 @@ public class Validator {
      */
     public boolean isEmailValid(EditText et_email){
         String value = et_email.getText().toString().trim();
-        String emailPattern = "[a-zA-Z0-9._-]+@[e-z]+\\.+[a-z]+";
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         if (value.isEmpty()){
             et_email.setError("Veuillez entrer votre Email");
