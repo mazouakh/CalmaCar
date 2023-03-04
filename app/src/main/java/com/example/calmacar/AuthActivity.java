@@ -114,6 +114,8 @@ public class AuthActivity extends AppCompatActivity {
                 .commit();
     }
 
+
+    // TODO Move signup/login/logout logic to a separate Auth entity
     public void SignupUser(Bundle extras){
         Toast.makeText(this, "Inscription en cours...", Toast.LENGTH_SHORT).show();
 
