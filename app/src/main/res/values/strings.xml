@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">CalmaCar</string>
+    <string name="open_nav_drawer">Ouvrir le nav drawer</string>
+    <string name="close_nav_drawer">Fermer le nav drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
