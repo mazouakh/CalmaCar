@@ -35,7 +35,7 @@ public class RegisterFormFragment extends Fragment {
     // UI elements
     Button btn_signup;
     TextView tv_alreadyMember;
-    EditText et_lastname, et_firstname, et_email, et_password;
+    EditText et_lastname, et_firstname, et_email, et_password, et_phone;
     ImageView img_ic_pwd;
 
     public RegisterFormFragment() {
@@ -82,6 +82,7 @@ public class RegisterFormFragment extends Fragment {
         et_firstname = view.findViewById(R.id.et_firstname);
         et_email = view.findViewById(R.id.et_email);
         et_password = view.findViewById(R.id.et_password);
+        et_phone = view.findViewById(R.id.et_phone);
         img_ic_pwd = view.findViewById(R.id.img_ic_pwd);
 
         // Click listeners
@@ -125,7 +126,8 @@ public class RegisterFormFragment extends Fragment {
         if (!validator.isLastnameValid(et_lastname) |
             !validator.isFirstnameValid(et_firstname) |
             !validator.isEmailValid(et_email) |
-            !validator.isPasswordValid(et_password))
+            !validator.isPasswordValid(et_password) |
+            !validator.isPhoneNumberValid(et_phone))
             return;
 
         // Send data to auth activity
@@ -134,6 +136,7 @@ public class RegisterFormFragment extends Fragment {
         signupIntent.putExtra("EXTRA_FIRSTNAME", et_firstname.getText().toString().trim());
         signupIntent.putExtra("EXTRA_EMAIL", et_email.getText().toString().trim());
         signupIntent.putExtra("EXTRA_PASSWORD", et_password.getText().toString().trim());
+        signupIntent.putExtra("EXTRA_PHONE", et_phone.getText().toString().trim());
         getActivity().sendBroadcast(signupIntent);
 
     }

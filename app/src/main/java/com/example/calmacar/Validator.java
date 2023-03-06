@@ -97,4 +97,20 @@ public class Validator {
         et_password.setError(null);
         return true;
     }
+
+    public boolean isPhoneNumberValid(EditText et_phoneNumber){
+        String value = et_phoneNumber.getText().toString().trim();
+        String numberPattern = "^[+][0-9]{10,13}$";
+
+        if (value.isEmpty()){
+            et_phoneNumber.setError("Veuillez entrer un numéro de télephone");
+            return false;
+        }
+        if (!value.matches(numberPattern)){
+            et_phoneNumber.setError("numéro de télephone non valid");
+            return false;
+        }
+        et_phoneNumber.setError(null);
+        return true;
+    }
 }

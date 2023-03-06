@@ -124,6 +124,7 @@ public class AuthActivity extends AppCompatActivity {
         String password = extras.getString("EXTRA_PASSWORD");
         String lastname = extras.getString("EXTRA_LASTNAME");
         String firstname = extras.getString("EXTRA_FIRSTNAME");
+        String phone = extras.getString("EXTRA_PHONE");
 
 
         // Getting FirebaseAuth instance
@@ -164,7 +165,7 @@ public class AuthActivity extends AppCompatActivity {
                                    .build());
 
                            // Create a new instance of User
-                            User newUser = new User(firebaseUser.getUid(), firstname, lastname, userType);
+                            User newUser = new User(firebaseUser.getUid(), firstname, lastname, phone, userType);
 
                            // Get the Registered Users table reference from the database
                            DatabaseReference usersReference = FirebaseDatabase
