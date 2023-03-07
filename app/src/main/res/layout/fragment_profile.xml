@@ -3,19 +3,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileFragment"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/loginlayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/teal_700"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/img_profile"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_weight="3"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginVertical="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textAllCaps="true"
+                android:text="Profile"
+                android:layout_gravity="center"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile Fragment" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nom:"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/et_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prénom:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/et_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Numéro:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/et_phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"/>
+            <Button
+                android:id="@+id/btn_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="30dp"
+                android:layout_marginLeft="80dp"
+                android:text="Mettre à jour"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>
