@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1090723848934",
+    "firebase_url": "https://calmacar-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "calmacar",
     "storage_bucket": "calmacar.appspot.com"
   },

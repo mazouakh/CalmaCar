@@ -23,6 +23,11 @@ public class User {
         return lastname;
     }
 
+    /**
+     * Empty constructor for Firebase
+     * */
+    public User(){};
+
     public User(String uid, String firstname, String lastname, String phone, String userType){
         this.uid = uid;
         this.firstname = firstname;

@@ -36,6 +36,7 @@ public class AuthActivity extends AppCompatActivity {
     String userType;
 
     FirebaseAuth authProfile;
+    private boolean userOpenedMainApp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +85,31 @@ public class AuthActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         // Check if user is already logged then, then redirect to dashboard directly and kill AuthActivity
-        if (authProfile.getCurrentUser() == null)
+
+        // Getting current user
+        FirebaseUser firebaseUser = authProfile.getCurrentUser();
+
+        // check if there is a user logged in
+        if (firebaseUser == null)
             return;
+
+        // Check that his email is verified
+        if(!checkEmailIsVerified(firebaseUser))
+            return;
+
+        // At this point the user is logged in and verified
         redirectToDashboard(userType);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // redirect user back to main activity if after he opened the mail app to verify account
+        if(userOpenedMainApp){
+            userOpenedMainApp = false;
+            finish();
+        }
     }
 
     public void LoadRegisterForm(){
@@ -154,7 +176,6 @@ public class AuthActivity extends AppCompatActivity {
                            }
 
                            // At this point the registration is successful
-                           Toast.makeText(AuthActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
                            // Adding User data from the form to the database
@@ -186,11 +207,10 @@ public class AuthActivity extends AppCompatActivity {
                                        return;
                                     }
                                    // At this point the registration is successful
-                                   // send a verification email
-                                   firebaseUser.sendEmailVerification();
-                                   Toast.makeText(AuthActivity.this, "Registration successful. Please verify your email.", Toast.LENGTH_SHORT).show();
-                                   // Redirect to user dashboard
-                                   redirectToDashboard(userType);
+                                   Toast.makeText(AuthActivity.this, "Inscription avec success. Veuillez verifier votre email.", Toast.LENGTH_SHORT).show();
+                                   // Ask user to verify account in order to use app
+                                   checkEmailIsVerified(firebaseUser);
+
                                }
                            });
                        }
@@ -233,12 +253,8 @@ public class AuthActivity extends AppCompatActivity {
                 // Getting current user
                 FirebaseUser firebaseUser = authProfile.getCurrentUser();
                 // Check that his email is verified
-                if (!firebaseUser.isEmailVerified()){
-                    firebaseUser.sendEmailVerification();
-                    authProfile.signOut();
-                    showEmailNotVerifiedAlertDialogue();
+                if(!checkEmailIsVerified(firebaseUser))
                     return;
-                }
 
                 // Check if the user is logging in in the category that he is signed up to
                 /*
@@ -275,6 +291,16 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
+    private boolean checkEmailIsVerified(FirebaseUser firebaseUser) {
+        if (!firebaseUser.isEmailVerified()){
+            firebaseUser.sendEmailVerification();
+            authProfile.signOut();
+            showEmailNotVerifiedAlertDialogue();
+            return false;
+        }
+        return true;
+    }
+
     private void showEmailNotVerifiedAlertDialogue() {
         // Crating the builder
         AlertDialog.Builder builder = new AlertDialog.Builder(AuthActivity.this);
@@ -292,6 +318,7 @@ public class AuthActivity extends AppCompatActivity {
                 intent.addCategory(Intent.CATEGORY_APP_EMAIL);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(Intent.createChooser(intent,"Open Email App: "));
+                userOpenedMainApp = true;
             }
         });
 
@@ -304,6 +331,8 @@ public class AuthActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        builder.setCancelable(false);
 
         // Create & show the AlertDialog
         builder.create().show();

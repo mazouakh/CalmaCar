@@ -100,7 +100,7 @@ public class Validator {
 
     public boolean isPhoneNumberValid(EditText et_phoneNumber){
         String value = et_phoneNumber.getText().toString().trim();
-        String numberPattern = "^[+][0-9]{10,13}$";
+        String numberPattern = "^[+][0-9]{11}$";
 
         if (value.isEmpty()){
             et_phoneNumber.setError("Veuillez entrer un numéro de télephone");
