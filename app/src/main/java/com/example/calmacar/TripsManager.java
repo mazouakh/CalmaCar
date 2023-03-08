@@ -1,6 +1,9 @@
 package com.example.calmacar;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +27,7 @@ import java.util.Set;
 public class TripsManager {
 
     private static TripsManager instance;
+    private static String TAG = "TripsManager";
     FirebaseAuth mAuth;
     FirebaseDatabase mDb;
     DatabaseReference activeTripsReference, completedTripsReference;
@@ -35,8 +39,8 @@ public class TripsManager {
         // Firebase Database instance
         mDb = FirebaseDatabase.getInstance();
         // Database references
-        DatabaseReference activeTripsReference = mDb.getReference("Active Trips");
-        DatabaseReference completedTripsReference = mDb.getReference("Completed Trips");
+        activeTripsReference = mDb.getReference("Active Trips");
+        completedTripsReference = mDb.getReference("Completed Trips");
     }
 
     public static TripsManager getInstance(){
@@ -46,7 +50,7 @@ public class TripsManager {
         return instance;
     }
 
-    public void createNewTrip(String uid, String date, String depart_city, String arriver_city){
+    public void createNewTrip(Context ctx, String uid, String date, String depart_city, String arriver_city){
         // Create a new trip object
         Trip newTrip = new Trip(date, depart_city, arriver_city);
 
@@ -65,10 +69,14 @@ public class TripsManager {
                 postValues.put(newTrip.getId(), newTrip);
                 // updating the node with new values
                 activeTripsReference.child(uid).setValue(postValues);
+                // Success toast
+                Toast.makeText(ctx, "Trajet ajouter avec success", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Could not add trip, an error occured", error.toException());
+                Toast.makeText(ctx, "Une erreur c'est produit, veuillez réessayer.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -101,15 +109,46 @@ public class TripsManager {
         });
     }
 
-    public ArrayList<Trip> getActiveTripsForUser(String userID){
+    public ArrayList<Trip> getActiveTripsForCurrentUser(){
         ArrayList<Trip> trips = new ArrayList<>();
 
         return trips;
     }
 
-    public ArrayList<Trip> getCompletedTripsForUser(String userID){
+    public ArrayList<Trip> getCompletedTripsForCurrentUser(){
         ArrayList<Trip> trips = new ArrayList<>();
 
         return trips;
+    }
+
+    public void updateActiveTripsListView(Context ctx, ListView listView){
+        activeTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Trip> activeTrips = new ArrayList<>();
+                if (snapshot.exists()){
+                    // get all trips
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        activeTrips.add(dataSnapshot.getValue(Trip.class));
+
+                        Log.d(TAG, "onDataChange: got the following trip : " + dataSnapshot.getValue(Trip.class));
+                    }
+                    Log.d(TAG, "Got the following trips : " + activeTrips.toString());
+
+                    // update the list view
+                    TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, activeTrips);
+                    listView.setAdapter(activeTripsAdapter);
+
+                }else {
+                    Log.w(TAG, "Trying to get trips for user ["+ mAuth.getUid() +"] " +
+                            "but no trips has been added yet.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

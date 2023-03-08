@@ -7,6 +7,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +33,12 @@ public class TripsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // References
+    Button btn_completeTrip;
+    EditText et_tripID;
+    TripsManager tripsManager;
+    ListView lv_activeTrips;
 
     public TripsFragment() {
         // Required empty public constructor
@@ -53,12 +69,34 @@ public class TripsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        tripsManager = TripsManager.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trips, container, false);
+        View view = inflater.inflate(R.layout.fragment_trips, container, false);
+
+
+        // Hooks
+        btn_completeTrip = view.findViewById(R.id.btn_completeTrip);
+        et_tripID = view.findViewById(R.id.et_tripID);
+        lv_activeTrips = view.findViewById(R.id.lv_activeTrips);
+
+
+        // Click Listeners
+        btn_completeTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tripsManager.markTripAsCompleted(et_tripID.getText().toString());
+            }
+        });
+
+        // Populating the list view of active trips
+        tripsManager.updateActiveTripsListView(getActivity().getApplicationContext(), lv_activeTrips);
+
+        return view;
     }
 }
