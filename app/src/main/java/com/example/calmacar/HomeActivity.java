@@ -132,6 +132,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 finish();
                 break;
+            case R.id.nav_add_trip:
+                // show add trip fragment
+                if (getSupportFragmentManager().findFragmentById(R.id.frag_home) instanceof CreateTripFragment)
+                    break;
+
+                // Load profile fragment
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.frag_home, CreateTripFragment.newInstance("",""))
+                        .commit();
+                break;
         }
 
         return true;

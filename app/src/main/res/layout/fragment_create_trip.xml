@@ -26,6 +26,7 @@
                     android:textSize="20sp"
                     android:text="Ville Depart :"/>
                 <EditText
+                    android:id="@+id/et_startCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -40,6 +41,7 @@
                     android:textSize="20sp"
                     android:text="Ville Arrivé :"/>
                 <EditText
+                    android:id="@+id/et_endCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -58,10 +60,11 @@
                 android:text="Date depart :"/>
 
             <Button
+                android:id="@+id/btn_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="19 OCT 1997"
+                android:text="19 OCT 2023"
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 style="?android:spinnerStyle"/>
@@ -84,6 +87,7 @@
                     android:textSize="20sp"
                     android:text="Heure depart :"/>
                 <Button
+                    android:id="@+id/btn_startTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -107,6 +111,7 @@
                     android:text="Heure Arrivé :"/>
 
                 <Button
+                    android:id="@+id/btn_endTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

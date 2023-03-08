@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -28,7 +29,8 @@ public class CreateTripFragment extends Fragment {
     private String mParam2;
 
     // References
-    private Button btn_addTrip;
+    private Button btn_addTrip, btn_date;
+    private EditText et_startCity, et_endCity;
     private TripsManager tripsManager;
 
     public CreateTripFragment() {
@@ -72,12 +74,21 @@ public class CreateTripFragment extends Fragment {
 
         // Hooks
         btn_addTrip = view.findViewById(R.id.btn_addTrip);
+        btn_date = view.findViewById(R.id.btn_date);
+        et_startCity = view.findViewById(R.id.et_startCity);
+        et_endCity = view.findViewById(R.id.et_endCity);
 
         // Click Listeners
         btn_addTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tripsManager.createNewTrip(FirebaseAuth.getInstance().getUid(), "08/03/2023", "Tours", "Lyon");
+
+                tripsManager.createNewTrip(
+                        getActivity().getApplicationContext(),
+                        FirebaseAuth.getInstance().getUid(),
+                        btn_date.getText().toString(),
+                        et_startCity.getText().toString(),
+                        et_endCity.getText().toString());
             }
         });
 

@@ -11,6 +11,10 @@
             android:title="Trajets"
             android:icon="@drawable/ic_map"/>
         <item
+            android:id="@+id/nav_add_trip"
+            android:title="Ajouter un trajet"
+            android:icon="@drawable/ic_add_trip"/>
+        <item
             android:id="@+id/nav_wallet"
             android:title="Cagnotte"
             android:icon="@drawable/ic_wallet"/>
