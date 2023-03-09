@@ -43,14 +43,14 @@ public class TripsAdapter extends BaseAdapter {
         // Hooks
         TextView tv_tripID = view.findViewById(R.id.tv_tripID);
         TextView tv_tripDate = view.findViewById(R.id.tv_tripDate);
-        TextView tv_tripStartCity = view.findViewById(R.id.tv_tripStartCity);
-        TextView tv_tripEndCity = view.findViewById(R.id.tv_tripEndCity);
+        TextView tv_tripItinerary = view.findViewById(R.id.tv_tripItinerary);
+        TextView tv_tripPrice = view.findViewById(R.id.tv_tripPrice);
 
         // Set Values
         tv_tripID.setText(trips.get(i).getId());
         tv_tripDate.setText(trips.get(i).getDate());
-        tv_tripStartCity.setText(trips.get(i).getStartCity());
-        tv_tripEndCity.setText(trips.get(i).getEndCity());
+        tv_tripItinerary.setText(trips.get(i).getStartCity() + "->" + trips.get(i).getEndCity());
+        tv_tripPrice.setText(String.valueOf(trips.get(i).getPrice()) + "€");
 
         return view;
     }
