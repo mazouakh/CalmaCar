@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -109,16 +110,33 @@ public class TripsManager {
         });
     }
 
-    public ArrayList<Trip> getActiveTripsForCurrentUser(){
-        ArrayList<Trip> trips = new ArrayList<>();
+    public void markTripAsCompletedAndUpdateUI(Context ctx, ListView listView, String tripID){
+        // remove the trip from active trips and add it to completed trips
+        activeTripsReference.child(mAuth.getUid()).child(tripID).addListenerForSingleValueEvent(new ValueEventListener() {
 
-        return trips;
-    }
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // First check that the trip exists
+                if (snapshot.exists()){
+                    // store the trip to remove locally
+                    Trip tripToMarkCompleted = snapshot.getValue(Trip.class);
+                    // add trip to Completed Trips table
+                    completedTripsReference.child(mAuth.getUid()).child(tripID).setValue(tripToMarkCompleted);
+                    // remove Trip from Active Trips table
+                    activeTripsReference.child(mAuth.getUid()).child(tripID).removeValue();
+                    Toast.makeText(ctx, "Trajet completé avec succes", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Log.e("TripsManager", "Trying to mark the trip ("+ tripID +") as completed but the trip was not found in ActiveTrips db");
+                }
+                updateActiveTripsListView(ctx, listView);
+            }
 
-    public ArrayList<Trip> getCompletedTripsForCurrentUser(){
-        ArrayList<Trip> trips = new ArrayList<>();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        return trips;
+            }
+        });
     }
 
     public void updateActiveTripsListView(Context ctx, ListView listView){
@@ -142,6 +160,37 @@ public class TripsManager {
                 }else {
                     Log.w(TAG, "Trying to get trips for user ["+ mAuth.getUid() +"] " +
                             "but no trips has been added yet.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void updateCompletedTripsListView(Context ctx, ListView listView){
+        completedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Trip> completedTrips = new ArrayList<>();
+                if (snapshot.exists()){
+                    // get all trips
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        completedTrips.add(dataSnapshot.getValue(Trip.class));
+
+                        Log.d(TAG, "onDataChange: got the following completed trip : " + dataSnapshot.getValue(Trip.class));
+                    }
+                    Log.d(TAG, "Got the following completed trips : " + completedTrips);
+
+                    // update the list view
+                    TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, completedTrips);
+                    listView.setAdapter(activeTripsAdapter);
+
+                }else {
+                    Log.w(TAG, "Trying to get completed trips for user ["+ mAuth.getUid() +"] " +
+                            "but none were found.");
                 }
             }
 

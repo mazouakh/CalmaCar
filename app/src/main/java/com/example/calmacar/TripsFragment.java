@@ -90,7 +90,7 @@ public class TripsFragment extends Fragment {
         btn_completeTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tripsManager.markTripAsCompleted(et_tripID.getText().toString());
+                tripsManager.markTripAsCompletedAndUpdateUI(getActivity().getApplicationContext(), lv_activeTrips,et_tripID.getText().toString());
             }
         });
 
