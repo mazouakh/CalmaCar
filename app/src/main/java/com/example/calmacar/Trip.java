@@ -1,9 +1,28 @@
 package com.example.calmacar;
 
+import android.content.Intent;
+
 import java.security.SecureRandom;
 
 public class Trip {
-    String id, date, startCity, endCity;
+    String id, startCity, endCity, date, startTime, endTime, description;
+    float price;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public float getPrice() {
+        return price;
+    }
 
     public String getId() {
         return id;
@@ -23,11 +42,16 @@ public class Trip {
 
     public Trip() {}
 
-    public Trip(String date, String depart_city, String arriver_city) {
+
+    public Trip(String startCity, String endCity, String date, String startTime, String endTime, String price, String description) {
         this.id = generateID(5);
+        this.startCity = startCity;
+        this.endCity = endCity;
         this.date = date;
-        this.startCity = depart_city;
-        this.endCity = arriver_city;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = Float.parseFloat(price);
+        this.description = description;
     }
 
     private static String generateID(int length) {

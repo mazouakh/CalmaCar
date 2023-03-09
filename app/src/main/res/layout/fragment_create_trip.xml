@@ -28,7 +28,9 @@
                 <EditText
                     android:id="@+id/et_startCity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Nom de la ville"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,15 +45,21 @@
                 <EditText
                     android:id="@+id/et_endCity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Nom de la ville"/>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,6 +76,30 @@
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 style="?android:spinnerStyle"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:text="Prix :"/>
+
+                <EditText
+                    android:id="@+id/et_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginTop="10dp"
+                    android:hint="0€"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -122,6 +154,22 @@
 
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:text="Description :"/>
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:hint="Ecrivez une description ou une note à laisser à votre passager..."/>
+
+
         <Button
             android:id="@+id/btn_addTrip"
             android:layout_width="wrap_content"

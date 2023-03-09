@@ -113,4 +113,35 @@ public class Validator {
         et_phoneNumber.setError(null);
         return true;
     }
+
+    public boolean isCityNameValid(EditText et_city) {
+
+        String value = et_city.getText().toString().trim();
+
+        if (value.isEmpty()){
+            et_city.setError("Veuillez entrer le nom de la ville");
+            return false;
+        }
+        // TODO check if the city is in the list of accepted cities
+
+        return true;
+    }
+
+    public boolean isPriceValid(EditText et_price) {
+        String value = et_price.getText().toString().trim();
+
+        if (value.isEmpty()){
+            et_price.setError("Veuillez entrer un prix");
+            return false;
+        }
+
+        // TODO validate price
+
+        return true;
+    }
+
+    public boolean isDescriptionValid(EditText et_description) {
+        // TODO validate description
+        return true;
+    }
 }

@@ -51,14 +51,11 @@ public class TripsManager {
         return instance;
     }
 
-    public void createNewTrip(Context ctx, String uid, String date, String depart_city, String arriver_city){
-        // Create a new trip object
-        Trip newTrip = new Trip(date, depart_city, arriver_city);
-
-        // send it to the database
+    public void createNewTrip(Context ctx, Trip newTrip){
+        // send the new trip to the database
 
         // get old values before updating them
-        activeTripsReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        activeTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Map<String, Object> postValues = new HashMap<String, Object>();
@@ -69,7 +66,7 @@ public class TripsManager {
                 // adding new value
                 postValues.put(newTrip.getId(), newTrip);
                 // updating the node with new values
-                activeTripsReference.child(uid).setValue(postValues);
+                activeTripsReference.child(mAuth.getUid()).setValue(postValues);
                 // Success toast
                 Toast.makeText(ctx, "Trajet ajouter avec success", Toast.LENGTH_SHORT).show();
             }
