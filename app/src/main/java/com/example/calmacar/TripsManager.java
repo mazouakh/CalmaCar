@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -78,33 +79,6 @@ public class TripsManager {
             }
         });
 
-    }
-
-    public void markTripAsCompleted(String tripID){
-        // remove the trip from active trips and add it to completed trips
-        activeTripsReference.child(mAuth.getUid()).child(tripID).addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // First check that the trip exists
-                if (snapshot.exists()){
-                    // store the trip to remove locally
-                    Trip tripToMarkCompleted = snapshot.getValue(Trip.class);
-                    // add trip to Completed Trips table
-                    completedTripsReference.child(mAuth.getUid()).child(tripID).setValue(tripToMarkCompleted);
-                    // remove Trip from Active Trips table
-                    activeTripsReference.child(mAuth.getUid()).child(tripID).removeValue();
-                }
-                else {
-                    Log.e("TripsManager", "Trying to mark the trip ("+ tripID +") as completed but the trip was not found in ActiveTrips db");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     public void markTripAsCompletedAndUpdateUI(Context ctx, ListView listView, String tripID){
@@ -189,6 +163,26 @@ public class TripsManager {
                     Log.w(TAG, "Trying to get completed trips for user ["+ mAuth.getUid() +"] " +
                             "but none were found.");
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void updateWalletBalanceBasedOnCompletedTrips(Context ctx, TextView balance){
+        completedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                float totalBalance = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if (!dataSnapshot.child("price").exists())
+                        continue;
+                    totalBalance += dataSnapshot.child("price").getValue(Float.TYPE);
+                }
+                balance.setText(totalBalance + "€");
             }
 
             @Override

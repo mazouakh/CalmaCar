@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +28,7 @@ public class WalletFragment extends Fragment {
 
     // references
     ListView lv_completedTrips;
+    TextView tv_balance;
     TripsManager tripsManager;
 
     public WalletFragment() {
@@ -68,9 +70,15 @@ public class WalletFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wallet, container, false);
         lv_completedTrips = view.findViewById(R.id.lv_completedTrips);
+        tv_balance = view.findViewById(R.id.tv_balance);
 
-        tripsManager.updateCompletedTripsListView(getActivity().getApplicationContext(), lv_completedTrips);
+        tripsManager.updateCompletedTripsListView(
+                getActivity().getApplicationContext(),
+                lv_completedTrips);
 
+        tripsManager.updateWalletBalanceBasedOnCompletedTrips(
+                getActivity().getApplicationContext(),
+                tv_balance);
         return view;
     }
 }
