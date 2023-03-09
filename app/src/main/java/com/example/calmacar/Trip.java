@@ -50,7 +50,7 @@ public class Trip {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.price = Float.parseFloat(price);
+        this.price = Float.parseFloat(price.replace("€", ""));
         this.description = description;
     }
 

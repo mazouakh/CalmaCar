@@ -1,6 +1,8 @@
 package com.example.calmacar;
 
 import android.app.DatePickerDialog;
+import android.icu.text.DecimalFormat;
+import android.icu.text.DecimalFormatSymbols;
 import android.icu.text.NumberFormat;
 import android.os.Bundle;
 
@@ -130,6 +132,40 @@ public class CreateTripFragment extends Fragment {
         });
 
         // TODO price formatting
+        et_price.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            String current = "";
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                et_price.removeTextChangedListener(this);
+//                formattedPrice = formatPrice(charSequence.toString()) + "€";
+//                et_price.setText(formattedPrice);
+//                et_price.setSelection(formattedPrice.length());
+//                et_price.addTextChangedListener(this);
+
+                if(!charSequence.toString().equals(current)){
+                    et_price.removeTextChangedListener(this);
+
+                    String cleanString = charSequence.toString().replaceAll("[€,.]", "");
+
+//                    double parsed = Double.parseDouble(cleanString);
+                    String formatted = Formatter.getInstance().formatPrice(cleanString);
+
+                    current = formatted;
+                    et_price.setText(formatted);
+                    et_price.setSelection(formatted.length());
+
+                    et_price.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
 
         return view;
