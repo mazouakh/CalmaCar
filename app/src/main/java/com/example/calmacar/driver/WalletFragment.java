@@ -1,14 +1,22 @@
-package com.example.calmacar;
+package com.example.calmacar.driver;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.calmacar.R;
+import com.example.calmacar.common.Balance;
+import com.example.calmacar.common.Formatter;
+import com.example.calmacar.common.PaymentManager;
+import com.example.calmacar.common.TripsManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,9 +35,11 @@ public class WalletFragment extends Fragment {
     private String mParam2;
 
     // references
-    ListView lv_completedTrips;
+    ListView lv_completedTrips, lv_payments;
     TextView tv_balance;
+    Button btn_requestPayment;
     TripsManager tripsManager;
+    PaymentManager paymentManager;
 
     public WalletFragment() {
         // Required empty public constructor
@@ -62,6 +72,7 @@ public class WalletFragment extends Fragment {
         }
 
         tripsManager = TripsManager.getInstance();
+        paymentManager = PaymentManager.getInstance();
     }
 
     @Override
@@ -69,16 +80,32 @@ public class WalletFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wallet, container, false);
-        lv_completedTrips = view.findViewById(R.id.lv_completedTrips);
-        tv_balance = view.findViewById(R.id.tv_balance);
 
+        // Hooks
+        lv_completedTrips = view.findViewById(R.id.lv_completedTrips);
+        lv_payments = view.findViewById(R.id.lv_payments);
+        tv_balance = view.findViewById(R.id.tv_balance);
+        btn_requestPayment = view.findViewById(R.id.btn_requestPayment);
+
+        // UpdateUI
         tripsManager.updateCompletedTripsListView(
                 getActivity().getApplicationContext(),
                 lv_completedTrips);
 
-        tripsManager.updateWalletBalanceBasedOnCompletedTrips(
+        paymentManager.updateDriverAvailableBalance(
                 getActivity().getApplicationContext(),
                 tv_balance);
+
+        paymentManager.updateDriverPaymentsListView(getActivity(), lv_payments);
+
+        // Click Listeners
+        btn_requestPayment.setOnClickListener(new View.OnClickListener() {
+            // TODO get the list of
+            @Override
+            public void onClick(View view) {
+                tripsManager.archiveTripsAndSendPayment(getActivity(), lv_payments);
+            }
+        });
         return view;
     }
 }

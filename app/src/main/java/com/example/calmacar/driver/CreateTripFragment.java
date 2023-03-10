@@ -1,9 +1,5 @@
-package com.example.calmacar;
+package com.example.calmacar.driver;
 
-import android.app.DatePickerDialog;
-import android.icu.text.DecimalFormat;
-import android.icu.text.DecimalFormatSymbols;
-import android.icu.text.NumberFormat;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.calmacar.common.Formatter;
+import com.example.calmacar.common.PickerManager;
+import com.example.calmacar.R;
+import com.example.calmacar.common.Trip;
+import com.example.calmacar.common.TripsManager;
+import com.example.calmacar.common.Validator;
 
 /**
  * A simple {@link Fragment} subclass.

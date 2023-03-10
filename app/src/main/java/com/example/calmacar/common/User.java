@@ -1,4 +1,4 @@
-package com.example.calmacar;
+package com.example.calmacar.common;
 
 public class User {
     private String uid, firstname, lastname, phone, userType;

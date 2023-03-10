@@ -1,4 +1,4 @@
-package com.example.calmacar;
+package com.example.calmacar.common;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;

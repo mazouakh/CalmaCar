@@ -1,12 +1,12 @@
-package com.example.calmacar;
+package com.example.calmacar.common;
 
 import android.content.Intent;
 
 import java.security.SecureRandom;
 
 public class Trip {
-    String id, startCity, endCity, date, startTime, endTime, description;
-    float price;
+    private String id, startCity, endCity, date, startTime, endTime, description;
+    private float price;
 
     public String getStartTime() {
         return startTime;
@@ -44,7 +44,7 @@ public class Trip {
 
 
     public Trip(String startCity, String endCity, String date, String startTime, String endTime, String price, String description) {
-        this.id = generateID(5);
+        this.id = Formatter.getInstance().generateID(5);
         this.startCity = startCity;
         this.endCity = endCity;
         this.date = date;
@@ -52,16 +52,6 @@ public class Trip {
         this.endTime = endTime;
         this.price = Float.parseFloat(price.replace("€", ""));
         this.description = description;
-    }
-
-    private static String generateID(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        SecureRandom random = new SecureRandom();
-        StringBuilder sb = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            sb.append(characters.charAt(random.nextInt(characters.length())));
-        }
-        return sb.toString();
     }
 
     @Override

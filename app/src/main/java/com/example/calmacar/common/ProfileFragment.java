@@ -1,4 +1,4 @@
-package com.example.calmacar;
+package com.example.calmacar.common;
 
 import android.os.Bundle;
 
@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.calmacar.R;
+import com.example.calmacar.driver.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

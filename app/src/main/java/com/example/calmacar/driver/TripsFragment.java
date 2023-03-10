@@ -1,4 +1,4 @@
-package com.example.calmacar;
+package com.example.calmacar.driver;
 
 import android.os.Bundle;
 
@@ -7,16 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
-import java.util.Date;
+import com.example.calmacar.R;
+import com.example.calmacar.common.TripsManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,7 +86,10 @@ public class TripsFragment extends Fragment {
         btn_completeTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tripsManager.markTripAsCompletedAndUpdateUI(getActivity().getApplicationContext(), lv_activeTrips,et_tripID.getText().toString());
+                tripsManager.markTripAsCompletedAndUpdateUI(
+                        getActivity().getApplicationContext(),
+                        lv_activeTrips,
+                        et_tripID.getText().toString());
             }
         });
 

@@ -1,17 +1,13 @@
-package com.example.calmacar;
+package com.example.calmacar.common;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,11 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class TripsManager {
 
@@ -32,7 +25,7 @@ public class TripsManager {
     private static String TAG = "TripsManager";
     FirebaseAuth mAuth;
     FirebaseDatabase mDb;
-    DatabaseReference activeTripsReference, completedTripsReference;
+    DatabaseReference activeTripsReference, completedTripsReference, archivedTripsReference;
 
 
     private TripsManager() {
@@ -43,6 +36,7 @@ public class TripsManager {
         // Database references
         activeTripsReference = mDb.getReference("Active Trips");
         completedTripsReference = mDb.getReference("Completed Trips");
+        archivedTripsReference = mDb.getReference("Archived Trips");
     }
 
     public static TripsManager getInstance(){
@@ -110,6 +104,65 @@ public class TripsManager {
         });
     }
 
+    public void archiveTripsAndSendPayment(Context ctx, ListView lv_payments){
+        completedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                float tripsTotalPrice = 0;
+                // First check that the user has completed trips
+                if (snapshot.exists()){
+                    // iterate through each trip
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        // store the trip to remove locally
+                        Trip tripToMarkPaid = dataSnapshot.getValue(Trip.class);
+                        // add trip to Completed Trips table
+                        archivedTripsReference.child(mAuth.getUid()).child(tripToMarkPaid.getId()).setValue(tripToMarkPaid);
+                        // remove Trip from Active Trips table
+                        completedTripsReference.child(mAuth.getUid()).child(tripToMarkPaid.getId()).removeValue();
+                        // save the trip price
+                        tripsTotalPrice += tripToMarkPaid.getPrice();
+                    }
+                    // Create a payment to the driver
+                    PaymentManager.getInstance().makePayment(ctx, lv_payments, tripsTotalPrice);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void markTripAsPaidToDriverAndUpdateUI(Context ctx, ListView listView, String tripID){
+        // remove the trip from completed trips and add it to archived trips
+        completedTripsReference.child(mAuth.getUid()).child(tripID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // First check that the trip exists
+                if (snapshot.exists()){
+                    // store the trip to remove locally
+                    Trip tripToMarkPaid = snapshot.getValue(Trip.class);
+                    // add trip to Completed Trips table
+                    archivedTripsReference.child(mAuth.getUid()).child(tripID).setValue(tripToMarkPaid);
+                    // remove Trip from Active Trips table
+                    completedTripsReference.child(mAuth.getUid()).child(tripID).removeValue();
+                    Log.d(TAG, "onDataChange: Trajet " + tripID + " marqué comme payé au conducteur avec succes.");
+                }
+                else {
+                    Log.e(TAG, "Trying to mark the trip "+ tripID +" as paid but the trip was not found in Completed Trips db");
+                }
+                updateActiveTripsListView(ctx, listView);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void updateActiveTripsListView(Context ctx, ListView listView){
         activeTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,17 +172,15 @@ public class TripsManager {
                     // get all trips
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         activeTrips.add(dataSnapshot.getValue(Trip.class));
-
-                        Log.d(TAG, "onDataChange: got the following trip : " + dataSnapshot.getValue(Trip.class));
                     }
-                    Log.d(TAG, "Got the following trips : " + activeTrips.toString());
+                    Log.d(TAG, "Got the following active trips : " + activeTrips.toString());
 
                     // update the list view
                     TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, activeTrips);
                     listView.setAdapter(activeTripsAdapter);
 
                 }else {
-                    Log.w(TAG, "Trying to get trips for user ["+ mAuth.getUid() +"] " +
+                    Log.w(TAG, "Trying to get active trips for user ["+ mAuth.getUid() +"] " +
                             "but no trips has been added yet.");
                 }
             }
@@ -150,8 +201,6 @@ public class TripsManager {
                     // get all trips
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         completedTrips.add(dataSnapshot.getValue(Trip.class));
-
-                        Log.d(TAG, "onDataChange: got the following completed trip : " + dataSnapshot.getValue(Trip.class));
                     }
                     Log.d(TAG, "Got the following completed trips : " + completedTrips);
 
@@ -172,17 +221,26 @@ public class TripsManager {
         });
     }
 
-    public void updateWalletBalanceBasedOnCompletedTrips(Context ctx, TextView balance){
-        completedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void updateArchivedTripsListView(Context ctx, ListView lv_archivedTrips) {
+        archivedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                float totalBalance = 0;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    if (!dataSnapshot.child("price").exists())
-                        continue;
-                    totalBalance += dataSnapshot.child("price").getValue(Float.TYPE);
+                ArrayList<Trip> archivedTrips = new ArrayList<>();
+                if (snapshot.exists()){
+                    // get all trips
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        archivedTrips.add(dataSnapshot.getValue(Trip.class));
+                    }
+                    Log.d(TAG, "Got the following archived trips : " + archivedTrips.toString());
+
+                    // update the list view
+                    TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, archivedTrips);
+                    lv_archivedTrips.setAdapter(activeTripsAdapter);
+
+                }else {
+                    Log.w(TAG, "Trying to get archived trips for user ["+ mAuth.getUid() +"] " +
+                            "but no trips has been added yet.");
                 }
-                balance.setText(totalBalance + "€");
             }
 
             @Override

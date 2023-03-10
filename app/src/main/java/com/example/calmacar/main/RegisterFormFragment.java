@@ -1,4 +1,4 @@
-package com.example.calmacar;
+package com.example.calmacar.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.calmacar.R;
+import com.example.calmacar.common.Validator;
 
 /**
  * A simple {@link Fragment} subclass.
