@@ -140,13 +140,7 @@ public class CreateTripFragment extends Fragment {
             String current = "";
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                et_price.removeTextChangedListener(this);
-//                formattedPrice = formatPrice(charSequence.toString()) + "€";
-//                et_price.setText(formattedPrice);
-//                et_price.setSelection(formattedPrice.length());
-//                et_price.addTextChangedListener(this);
-
-                if(!charSequence.toString().equals(current)){
+                if(!charSequence.toString().equals(current) && !charSequence.toString().equals("")){
                     et_price.removeTextChangedListener(this);
 
                     String cleanString = charSequence.toString().replaceAll("[€,.]", "");
@@ -172,7 +166,6 @@ public class CreateTripFragment extends Fragment {
     }
 
     private void createNewTrip() {
-
         // TODO validating form data
         if (!validator.isCityNameValid(et_startCity) |
             !validator.isCityNameValid(et_endCity) |
@@ -194,5 +187,16 @@ public class CreateTripFragment extends Fragment {
                 getActivity().getApplicationContext(),
                 newTrip);
 
+        resetForm();
+    }
+
+    private void resetForm(){
+        et_startCity.setText("");
+        et_endCity.setText("");
+        et_price.setText("");
+        et_description.setText("");
+        btn_date.setText("01 JAN 2023");
+        btn_startTime.setText("00:00");
+        btn_endTime.setText("00:00");
     }
 }

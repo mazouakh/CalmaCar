@@ -49,7 +49,6 @@ public class Formatter {
     public String getDateTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
         String currentTime = sdf.format(Calendar.getInstance().getTime());
-        Log.d("TAG", "currentTime: " + currentTime);
         return currentTime;
     }
 }

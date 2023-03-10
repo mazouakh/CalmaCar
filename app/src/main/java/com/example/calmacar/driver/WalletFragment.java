@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.calmacar.R;
 import com.example.calmacar.common.Balance;
@@ -103,7 +104,11 @@ public class WalletFragment extends Fragment {
             // TODO get the list of
             @Override
             public void onClick(View view) {
-                tripsManager.archiveTripsAndSendPayment(getActivity(), lv_payments);
+                if (Balance.getInstance().getValue() <= 0){
+                    Toast.makeText(getActivity(), "Vous n'avez pas assez de balance pour demander un paiement.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                tripsManager.archiveTripsAndSendPayment(getActivity(), lv_payments, lv_completedTrips, tv_balance);
             }
         });
         return view;

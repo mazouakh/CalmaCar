@@ -104,7 +104,7 @@ public class TripsManager {
         });
     }
 
-    public void archiveTripsAndSendPayment(Context ctx, ListView lv_payments){
+    public void archiveTripsAndSendPayment(Context ctx, ListView lv_payments, ListView lv_completedTrips, TextView tv_balance){
         completedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -123,7 +123,7 @@ public class TripsManager {
                         tripsTotalPrice += tripToMarkPaid.getPrice();
                     }
                     // Create a payment to the driver
-                    PaymentManager.getInstance().makePayment(ctx, lv_payments, tripsTotalPrice);
+                    PaymentManager.getInstance().makePayment(ctx, lv_payments, lv_completedTrips, tv_balance, tripsTotalPrice);
                 }
             }
 
@@ -204,14 +204,13 @@ public class TripsManager {
                     }
                     Log.d(TAG, "Got the following completed trips : " + completedTrips);
 
-                    // update the list view
-                    TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, completedTrips);
-                    listView.setAdapter(activeTripsAdapter);
-
                 }else {
                     Log.w(TAG, "Trying to get completed trips for user ["+ mAuth.getUid() +"] " +
                             "but none were found.");
                 }
+                // update the list view
+                TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, completedTrips);
+                listView.setAdapter(activeTripsAdapter);
             }
 
             @Override

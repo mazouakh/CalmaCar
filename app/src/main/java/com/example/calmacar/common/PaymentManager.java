@@ -1,6 +1,7 @@
 package com.example.calmacar.common;
 
 import android.content.Context;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.Inflater;
 
 public class PaymentManager {
     private static PaymentManager instance;
@@ -25,6 +27,8 @@ public class PaymentManager {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDb;
     private DatabaseReference completedTripsReference, paymentsReference;
+
+    private Balance mBalance;
 
 
 
@@ -36,6 +40,8 @@ public class PaymentManager {
         // Database references
         completedTripsReference = mDb.getReference("Completed Trips");
         paymentsReference = mDb.getReference("Drivers Payments");
+        // Balance instance
+        mBalance = Balance.getInstance();
     }
 
     public static PaymentManager getInstance(){
@@ -44,10 +50,7 @@ public class PaymentManager {
         return instance;
     }
 
-    public void makePayment(Context ctx, ListView lv_payments, float amount){
-        // get all completed trips
-
-        // move them to Archived Trips
+    public void makePayment(Context ctx, ListView lv_payments, ListView lv_completedTrips, TextView tv_balance, float amount){
         // create a new payment instance
         Payment payment = new Payment(amount);
         // send it to the database
@@ -64,10 +67,10 @@ public class PaymentManager {
                 // updating the node with new values
                 paymentsReference.child(mAuth.getUid()).setValue(postValues);
                 // update UI
-                Payment[] payments = (Payment[]) postValues.values().toArray();
-                PaymentsAdapter adapter = new PaymentsAdapter(ctx, new ArrayList<>(Arrays.asList(payments)));
-                lv_payments.setAdapter(adapter);
-
+                updateDriverPaymentsListView(ctx, lv_payments);
+                mBalance.setValue(0);
+                tv_balance.setText("0.00€");
+                TripsManager.getInstance().updateCompletedTripsListView(ctx, lv_completedTrips);
                 Toast.makeText(ctx, "Paiement envoyé avec succes.", Toast.LENGTH_SHORT).show();
             }
 
@@ -89,6 +92,7 @@ public class PaymentManager {
                         continue;
                     totalBalance += dataSnapshot.child("price").getValue(Float.TYPE);
                 }
+                mBalance.setValue(totalBalance);
                 balance.setText(totalBalance + "€");
             }
 
