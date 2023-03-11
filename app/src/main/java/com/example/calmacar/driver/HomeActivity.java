@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.example.calmacar.common.Auth;
@@ -143,6 +144,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
+        // close the nav drawer
+        drawerLayout.closeDrawer(Gravity.LEFT, true);
         return true;
     }
 }
