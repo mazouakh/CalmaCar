@@ -1,10 +1,14 @@
 package com.example.calmacar.common;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 
 import java.security.SecureRandom;
 
-public class Trip {
+public class Trip implements Parcelable {
     private String id, startCity, endCity, date, startTime, endTime, description;
     private float price;
 
@@ -42,7 +46,6 @@ public class Trip {
 
     public Trip() {}
 
-
     public Trip(String startCity, String endCity, String date, String startTime, String endTime, String price, String description) {
         this.id = Formatter.getInstance().generateID(5);
         this.startCity = startCity;
@@ -54,13 +57,58 @@ public class Trip {
         this.description = description;
     }
 
+
+    protected Trip(Parcel in) {
+        id = in.readString();
+        startCity = in.readString();
+        endCity = in.readString();
+        date = in.readString();
+        startTime = in.readString();
+        endTime = in.readString();
+        description = in.readString();
+        price = in.readFloat();
+    }
+
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(startCity);
+        parcel.writeString(endCity);
+        parcel.writeString(date);
+        parcel.writeString(startTime);
+        parcel.writeString(endTime);
+        parcel.writeString(description);
+        parcel.writeFloat(price);
+    }
+
     @Override
     public String toString() {
         return "Trip{" +
                 "id='" + id + '\'' +
-                ", date='" + date + '\'' +
                 ", startCity='" + startCity + '\'' +
                 ", endCity='" + endCity + '\'' +
+                ", date='" + date + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
                 '}';
     }
 }
