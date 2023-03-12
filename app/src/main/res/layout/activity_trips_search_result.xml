@@ -22,18 +22,6 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/r_btn_priceAsc"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Prix Asc"/>
-        <RadioButton
-            android:id="@+id/r_btn_priceDsc"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Prix Dsc"/>
-        <RadioButton
             android:id="@+id/r_btn_departAsc"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -45,6 +33,18 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Depart Dsc"/>
+        <RadioButton
+            android:id="@+id/r_btn_priceAsc"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Prix Asc"/>
+        <RadioButton
+            android:id="@+id/r_btn_priceDsc"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Prix Dsc"/>
 
     </RadioGroup>
 
@@ -54,9 +54,9 @@
         android:layout_marginVertical="30dp"
         android:text="RESULT"/>
 
-        <ListView
-            android:id="@+id/lv_activeTrips"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+    <ListView
+        android:id="@+id/lv_searchResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 </LinearLayout>

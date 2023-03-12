@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.calmacar.R;
 import com.example.calmacar.common.Trip;
+import com.example.calmacar.common.TripsSearchResultAdapter;
 
 import java.awt.font.TextAttribute;
 import java.util.ArrayList;
@@ -21,20 +23,17 @@ import java.util.Collections;
 
 public class TripsSearchResultActivity extends AppCompatActivity {
 
-    //TODO remove this temporary code
-    TextView tv_result;
     RadioGroup r_grp_orderBy;
     RadioButton r_btn_priceAsc, r_btn_priceDsc, r_btn_departAsc, r_btn_departDsc;
+    ListView lv_searchResult;
     ArrayList<Trip> searchResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trips_search_result);
 
-        //TODO remove this temporary code
-        tv_result = findViewById(R.id.tv_result);
+        // Get data from intent
         searchResult = getIntent().getParcelableArrayListExtra("EXTRA_SEARCH_RESULT");
-        updateUI();
 
         // Hooks
         r_grp_orderBy = findViewById(R.id.r_grp_orderBy);
@@ -42,6 +41,7 @@ public class TripsSearchResultActivity extends AppCompatActivity {
         r_btn_priceDsc = findViewById(R.id.r_btn_priceDsc);
         r_btn_departAsc = findViewById(R.id.r_btn_departAsc);
         r_btn_departDsc = findViewById(R.id.r_btn_departDsc);
+        lv_searchResult = findViewById(R.id.lv_searchResult);
 
         // Order by radio btn
         r_grp_orderBy.clearCheck();
@@ -70,6 +70,9 @@ public class TripsSearchResultActivity extends AppCompatActivity {
             }
         });
         r_btn_departAsc.setChecked(true);
+
+        // Finally display the listview
+        updateUI();
     }
 
     private void orderByPrice(Boolean Ascending){
@@ -94,10 +97,7 @@ public class TripsSearchResultActivity extends AppCompatActivity {
 
    //TODO remove this temporary code
     private void updateUI(){
-        String resultText = "";
-        for (Trip trip : searchResult){
-            resultText = resultText + "-> " + trip.toString() + "\n";
-        }
-        tv_result.setText(resultText);
+        TripsSearchResultAdapter adapter = new TripsSearchResultAdapter(this, searchResult);
+        lv_searchResult.setAdapter(adapter);
     }
 }
