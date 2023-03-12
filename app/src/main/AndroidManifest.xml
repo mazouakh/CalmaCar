@@ -12,13 +12,15 @@
         android:theme="@style/Theme.CalmaCar"
         tools:targetApi="31">
         <activity
-            android:name=".trips_search_result"
+            android:name=".passenger.HomeActivity"
+            android:theme="@style/Theme.CalmaCar.Toolbar"
+            android:windowSoftInputMode="stateVisible|adjustPan"
             android:exported="false" />
         <activity
             android:name=".driver.HomeActivity"
             android:exported="false"
             android:theme="@style/Theme.CalmaCar.Toolbar"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity
             android:name=".main.AuthActivity"
             android:exported="false" />
