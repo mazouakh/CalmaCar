@@ -57,7 +57,19 @@ public class Trip implements Parcelable {
         this.description = description;
     }
 
+    /**
+     * Tells if the trip will occur after the time given in the argument
+     * @param other the time to compare to
+     * @return
+     */
+    public boolean isStartTimeAfter(String other){
+        if (this.startTime == null)
+            return false;
+        Formatter formatter = Formatter.getInstance();
+        return formatter.timeToInt(this.startTime) >= formatter.timeToInt(other);
+    }
 
+    // Parcelable Implementation
     protected Trip(Parcel in) {
         id = in.readString();
         startCity = in.readString();

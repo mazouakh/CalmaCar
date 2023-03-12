@@ -261,10 +261,10 @@ public class TripsManager {
                     for (DataSnapshot tripsSnapshot : driversSnapshot.getChildren()){
                         Trip currentlyFoundTrip = tripsSnapshot.getValue(Trip.class);
                         // check if the trip fits search criteria
-                        // TODO check against start time
                         if (!currentlyFoundTrip.getStartCity().equals(startCity) |
                         !currentlyFoundTrip.getEndCity().equals(endCity) |
-                        !currentlyFoundTrip.getDate().equals(date))
+                        !currentlyFoundTrip.getDate().equals(date) |
+                        !currentlyFoundTrip.isStartTimeAfter(startTime))
                             continue;
 
                         // add the trip to the result
