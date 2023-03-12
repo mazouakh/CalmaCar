@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.security.SecureRandom;
+import java.util.Comparator;
 
 public class Trip implements Parcelable {
     private String id, startCity, endCity, date, startTime, endTime, description;
@@ -109,6 +110,37 @@ public class Trip implements Parcelable {
         parcel.writeString(description);
         parcel.writeFloat(price);
     }
+
+    // Comparators
+    public static Comparator<Trip> PriceAscComparator = new Comparator<Trip>() {
+        @Override
+        public int compare(Trip trip1, Trip trip2) {
+            return Float.compare(trip1.getPrice(), trip2.getPrice());
+        }
+    };
+
+    public static Comparator<? super Trip> PriceDscComparator = new Comparator<Trip>() {
+        @Override
+        public int compare(Trip trip1, Trip trip2) {
+            return Float.compare(trip2.getPrice(), trip1.getPrice());
+        }
+    };
+
+    public static Comparator<Trip> StartTimeAscComparator = new Comparator<Trip>() {
+        @Override
+        public int compare(Trip trip1, Trip trip2) {
+            Formatter formatter = Formatter.getInstance();
+            return formatter.timeToInt(trip1.getStartTime()) - formatter.timeToInt(trip2.getStartTime());
+        }
+    };
+
+    public static Comparator<Trip> StartTimeDscComparator = new Comparator<Trip>() {
+        @Override
+        public int compare(Trip trip1, Trip trip2) {
+            Formatter formatter = Formatter.getInstance();
+            return formatter.timeToInt(trip2.getStartTime()) - formatter.timeToInt(trip1.getStartTime());
+        }
+    };
 
     @Override
     public String toString() {
