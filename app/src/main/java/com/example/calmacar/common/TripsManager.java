@@ -1,6 +1,7 @@
 package com.example.calmacar.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.calmacar.passenger.TripsSearchResultActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -240,6 +242,39 @@ public class TripsManager {
                     Log.w(TAG, "Trying to get archived trips for user ["+ mAuth.getUid() +"] " +
                             "but no trips has been added yet.");
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void searchForTripsAndDisplayResult(Context ctx, String startCity, String endCity, String date, String startTime) {
+        activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Trip> result = new ArrayList<>();
+                // look for the active trips
+                for (DataSnapshot driversSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripsSnapshot : driversSnapshot.getChildren()){
+                        Trip currentlyFoundTrip = tripsSnapshot.getValue(Trip.class);
+                        // check if the trip fits search criteria
+                        // TODO check against start time
+                        if (!currentlyFoundTrip.getStartCity().equals(startCity) |
+                        !currentlyFoundTrip.getEndCity().equals(endCity) |
+                        !currentlyFoundTrip.getDate().equals(date))
+                            continue;
+
+                        // add the trip to the result
+                        result.add(currentlyFoundTrip);
+                    }
+                }
+                // open search result activity and send to it the result
+                Intent intent = new Intent(ctx, TripsSearchResultActivity.class);
+                intent.putParcelableArrayListExtra("EXTRA_SEARCH_RESULT", result);
+                ctx.startActivity(intent);
             }
 
             @Override
