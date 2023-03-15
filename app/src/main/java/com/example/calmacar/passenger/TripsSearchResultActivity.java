@@ -49,15 +49,12 @@ public class TripsSearchResultActivity extends AppCompatActivity {
         r_grp_orderBy.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                Toast.makeText(TripsSearchResultActivity.this, "Radio button " + i + " clicked", Toast.LENGTH_SHORT).show();
                 switch (i){
                     case R.id.r_btn_priceAsc:
                         orderByPrice(true);
-                        Log.d("TSRActivity", "onCheckedChanged: ordering by price asc");
                         break;
                     case R.id.r_btn_priceDsc:
                         orderByPrice(false);
-                        Log.d("TSRActivity", "onCheckedChanged: ordering by price dsc");
 
                         break;
                     case R.id.r_btn_departAsc:
@@ -67,6 +64,8 @@ public class TripsSearchResultActivity extends AppCompatActivity {
                         orderByStartTime(false);
                         break;
                 }
+                // update UI
+                updateUI();
             }
         });
         r_btn_departAsc.setChecked(true);
@@ -81,8 +80,6 @@ public class TripsSearchResultActivity extends AppCompatActivity {
             Collections.sort(searchResult, Trip.PriceAscComparator);
         else
             Collections.sort(searchResult, Trip.PriceDscComparator);
-        // update UI
-        updateUI();
     }
 
     private void orderByStartTime(Boolean Ascending){
@@ -91,8 +88,6 @@ public class TripsSearchResultActivity extends AppCompatActivity {
             Collections.sort(searchResult, Trip.StartTimeAscComparator);
         else
             Collections.sort(searchResult, Trip.StartTimeDscComparator);
-        // update UI
-        updateUI();
     }
 
    //TODO remove this temporary code

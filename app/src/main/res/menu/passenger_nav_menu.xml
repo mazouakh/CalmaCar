@@ -15,11 +15,14 @@
         android:title="Profile">
         <menu>
             <group android:checkableBehavior="single">
-
             <item
                 android:id="@+id/nav_profile"
                 android:title="Profile"
                 android:icon="@drawable/ic_profile"/>
+            <item
+                android:id="@+id/nav_driver"
+                android:title="Switch Conducteur"
+                android:icon="@drawable/ic_driver"/>
             <item
                 android:id="@+id/nav_logout"
                 android:title="Deconexion"
