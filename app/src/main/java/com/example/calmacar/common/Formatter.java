@@ -41,10 +41,52 @@ public class Formatter {
         return sb.toString();
     }
 
-    public String getFormattedDateTime(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
-        String currentTime = sdf.format(Calendar.getInstance().getTime());
-        return currentTime;
+    public String formatDate(int year, int month, int day){
+
+        String yearText = String.valueOf(year);
+        String monthText = monthIndexToText(month);
+        String dayText = day < 10 ? "0" + day : String.valueOf(day);
+
+
+        return dayText + " " + monthText + " " + yearText;
+    }
+
+    public String formatTime(int hours, int minutes) {
+        String hoursText = hours < 10 ? "0" + hours : String.valueOf(hours);
+        String minutesText = minutes < 10 ? "0" + minutes : String.valueOf(minutes);
+
+        return hoursText + ":" + minutesText;
+    }
+
+    public String monthIndexToText(int idx){
+        switch (idx){
+            case 0:
+                return "JAN";
+            case 1:
+                return "FEV";
+            case 2:
+                return "MAR";
+            case 3:
+                return "AVR";
+            case 4:
+                return "MA";
+            case 5:
+                return "JUN";
+            case 6:
+                return "JUL";
+            case 7:
+                return "AUG";
+            case 8:
+                return "SEP";
+            case 9:
+                return "OCT";
+            case 10:
+                return "NOV";
+            case 11:
+                return "DEC";
+            default:
+                return "N/A";
+        }
     }
 
     public int timeToInt(String time){

@@ -16,7 +16,9 @@ public class Payment {
 
     public Payment(float amount) {
         Formatter formatter = Formatter.getInstance();
-        this.id =  formatter.getFormattedDateTime() + formatter.generateID(5);
+        TimeManager timeManager = TimeManager.getInstance();
+
+        this.id =  timeManager.getDateTime() + formatter.generateID(5);
         this.amount = amount;
     }
 }

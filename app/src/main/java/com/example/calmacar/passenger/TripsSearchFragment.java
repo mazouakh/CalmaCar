@@ -114,6 +114,11 @@ public class TripsSearchFragment extends Fragment {
                 searchForTrip();
             }
         });
+
+        // initialization of picker buttons text
+        mPickerManager.initializeDatePickerButton(btn_date);
+        mPickerManager.initializeTimePickerButton(btn_startTime);
+
         return view;
     }
 

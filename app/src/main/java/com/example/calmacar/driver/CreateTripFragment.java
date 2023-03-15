@@ -19,6 +19,8 @@ import com.example.calmacar.common.Trip;
 import com.example.calmacar.common.TripsManager;
 import com.example.calmacar.common.Validator;
 
+import java.util.Date;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CreateTripFragment#newInstance} factory method to
@@ -131,7 +133,6 @@ public class CreateTripFragment extends Fragment {
             }
         });
 
-        // TODO price formatting
         et_price.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -161,6 +162,9 @@ public class CreateTripFragment extends Fragment {
             }
         });
 
+        // initialization of picker buttons text
+        pickerManager.initializeDatePickerButton(btn_date);
+        pickerManager.initializeTimePickerButton(btn_startTime);
 
         return view;
     }
