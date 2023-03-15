@@ -68,6 +68,7 @@ public class AuthActivity extends AppCompatActivity {
                 LoginUser(intent.getExtras());
             }
         };
+
         registerReceiver(loginReceiver, loginFilter);
 
         IntentFilter signupFilter = new IntentFilter("DATA_SIGNUP");

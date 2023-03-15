@@ -127,8 +127,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_logout:
                 // Logout user
                 Auth.getInstance().logout();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                Intent intentLogout = new Intent(this, MainActivity.class);
+                startActivity(intentLogout);
                 finish();
                 break;
             case R.id.nav_add_trip:
@@ -141,6 +141,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.frag_home, CreateTripFragment.newInstance("",""))
                         .commit();
+                break;
+            case R.id.nav_passenger:
+                Intent intentPassenger = new Intent(this, com.example.calmacar.passenger.HomeActivity.class);
+                startActivity(intentPassenger);
+                finish();
                 break;
         }
 

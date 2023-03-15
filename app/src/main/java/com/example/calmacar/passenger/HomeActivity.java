@@ -83,8 +83,13 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.nav_logout:
                 // Logout user
                 Auth.getInstance().logout();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                Intent intentLogout = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intentLogout);
+                finish();
+                break;
+            case R.id.nav_driver:
+                Intent intentPassenger = new Intent(this, com.example.calmacar.driver.HomeActivity.class);
+                startActivity(intentPassenger);
                 finish();
                 break;
         }

@@ -29,6 +29,10 @@
                 android:title="Profile"
                 android:icon="@drawable/ic_profile"/>
             <item
+                android:id="@+id/nav_passenger"
+                android:title="Switch Passager"
+                android:icon="@drawable/ic_passenger"/>
+            <item
                 android:id="@+id/nav_logout"
                 android:title="Deconexion"
                 android:icon="@drawable/ic_logout"/>
