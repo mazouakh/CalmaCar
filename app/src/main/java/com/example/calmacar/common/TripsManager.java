@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.calmacar.passenger.SuccessfulReservationActivity;
 import com.example.calmacar.passenger.TripsDetailsActivity;
 import com.example.calmacar.passenger.TripsSearchResultActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +29,7 @@ public class TripsManager {
     private static String TAG = "TripsManager";
     FirebaseAuth mAuth;
     FirebaseDatabase mDb;
-    DatabaseReference activeTripsReference, completedTripsReference, archivedTripsReference;
+    DatabaseReference activeTripsReference, bookedTripsReference, completedTripsReference, archivedTripsReference;
 
 
     private TripsManager() {
@@ -38,6 +39,7 @@ public class TripsManager {
         mDb = FirebaseDatabase.getInstance();
         // Database references
         activeTripsReference = mDb.getReference("Active Trips");
+        bookedTripsReference = mDb.getReference("Booked Trips");
         completedTripsReference = mDb.getReference("Completed Trips");
         archivedTripsReference = mDb.getReference("Archived Trips");
     }
@@ -49,6 +51,9 @@ public class TripsManager {
         return instance;
     }
 
+    // CRUD API
+
+    // CREATE
     public void createNewTrip(Context ctx, Trip newTrip){
         // send the new trip to the database
 
@@ -78,6 +83,49 @@ public class TripsManager {
 
     }
 
+    // UPDATE
+    public void bookTrip(Context ctx, Trip trip) {
+        activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean tripFound = false;
+                // Find the trip in the db
+                usersLoop:
+                for (DataSnapshot driversSnapshot : snapshot.getChildren()) {
+                    // prevent booking a trip that is published by the same user
+                    if (driversSnapshot.getKey().equals(mAuth.getUid()))
+                        continue;
+                    for (DataSnapshot tripsSnapshot : driversSnapshot.getChildren()){
+                        if (!tripsSnapshot.getKey().equals(trip.getId()))
+                            continue;
+
+                        tripFound = true;
+
+                        // Move the trip from active to booked node in db
+                        Trip tripToBook = tripsSnapshot.getValue(Trip.class);
+                        // add trip to booked node
+                        bookedTripsReference.child(driversSnapshot.getKey()).child(mAuth.getUid()).child(tripsSnapshot.getKey()).setValue(tripToBook);
+                        // remove trip from active trip (a trip is no longer available after it's booked)
+                        activeTripsReference.child(tripsSnapshot.getKey()).child(tripsSnapshot.getKey()).removeValue();
+                        Toast.makeText(ctx, "Trajet reservé avec succes", Toast.LENGTH_SHORT).show();
+
+                        // open SuccessfulReservation Activity
+                        Intent intent = new Intent(ctx, SuccessfulReservationActivity.class);
+                        ctx.startActivity(intent);
+                        break usersLoop;
+                    }
+                }
+
+                if (!tripFound)
+                    Toast.makeText(ctx, "Trip " + trip.getId() + " not found as an active trip", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     public void displayTripDetails(Context ctx, Trip trip){
         activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

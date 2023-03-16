@@ -62,7 +62,7 @@ public class TripsDetailsActivity extends AppCompatActivity {
         btn_bookTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTripsManager.bookTrip(getApplicationContext(), trip);
+                mTripsManager.bookTrip(TripsDetailsActivity.this, trip);
             }
         });
 
