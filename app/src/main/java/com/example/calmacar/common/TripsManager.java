@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.calmacar.passenger.TripsDetailsActivity;
 import com.example.calmacar.passenger.TripsSearchResultActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -75,6 +76,37 @@ public class TripsManager {
             }
         });
 
+    }
+
+    public void displayTripDetails(Context ctx, Trip trip){
+        activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Search for the driver of this trip
+                usersLoop:
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()){
+                        Log.d(TAG, "onDataChange: looking for trip " + trip.getId() + " on snapshot " + tripSnapshot.toString());
+                        if (!tripSnapshot.getKey().equals(trip.getId()))
+                            continue;
+                        Log.d(TAG, "onDataChange: found the trip");
+                        // send both trip and it's driver to TripDetailActivity
+                        String driverID = dataSnapshot.getKey();
+                        Intent intent = new Intent(ctx, TripsDetailsActivity.class);
+                        intent.putExtra("EXTRA_TRIP", trip);
+                        intent.putExtra("EXTRA_DRIVER_ID", driverID);
+                        ctx.startActivity(intent);
+
+                        break usersLoop;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void markTripAsCompletedAndUpdateUI(Context ctx, ListView listView, String tripID){
@@ -282,5 +314,9 @@ public class TripsManager {
 
             }
         });
+    }
+
+    public void bookTrip(Context ctx, Trip trip) {
+        Toast.makeText(ctx, "Booking trip " + trip.toString(), Toast.LENGTH_SHORT).show();
     }
 }

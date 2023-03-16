@@ -15,10 +15,11 @@
         android:gravity="center"
         >
     <TextView
+        android:id="@+id/tv_tripDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-        android:text="Date d'aujourd'hui"/>
+        android:text="Date Trajet"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ly_1"
@@ -87,6 +88,7 @@
         android:layout_below="@id/ly_3"
         android:layout_marginTop="30dp">
         <TextView
+            android:id="@+id/tv_tripDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -101,11 +103,13 @@
         android:orientation="horizontal"
         >
         <TextView
+            android:id="@+id/tv_driverName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="Conducteur"/>
         <ImageView
+            android:id="@+id/imgv_driverPhoto"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/img_profile"
@@ -121,6 +125,7 @@
         android:layout_marginTop="30dp"
         android:layout_alignParentRight="true">
         <Button
+            android:id="@+id/btn_bookTrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"

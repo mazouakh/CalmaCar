@@ -12,7 +12,7 @@
         android:theme="@style/Theme.CalmaCar"
         tools:targetApi="31">
         <activity
-            android:name=".TripsDetailsActivity"
+            android:name=".passenger.TripsDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".passenger.TripsSearchResultActivity"
