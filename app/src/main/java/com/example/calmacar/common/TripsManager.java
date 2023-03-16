@@ -126,57 +126,37 @@ public class TripsManager {
             }
         });
     }
-    public void displayTripDetails(Context ctx, Trip trip){
-        activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+    public void completeTripAndUpdateUI(Context ctx, ListView lv_bookedTrips, String tripID){
+        // remove the trip from active trips and add it to completed trips
+        bookedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Search for the driver of this trip
-                usersLoop:
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()){
-                        Log.d(TAG, "onDataChange: looking for trip " + trip.getId() + " on snapshot " + tripSnapshot.toString());
-                        if (!tripSnapshot.getKey().equals(trip.getId()))
+                boolean tripFound = false;
+                for (DataSnapshot passengersSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripsSnapshot : passengersSnapshot.getChildren()){
+                        if (!tripsSnapshot.getKey().equals(tripID))
                             continue;
-                        Log.d(TAG, "onDataChange: found the trip");
-                        // send both trip and it's driver to TripDetailActivity
-                        String driverID = dataSnapshot.getKey();
-                        Intent intent = new Intent(ctx, TripsDetailsActivity.class);
-                        intent.putExtra("EXTRA_TRIP", trip);
-                        intent.putExtra("EXTRA_DRIVER_ID", driverID);
-                        ctx.startActivity(intent);
 
-                        break usersLoop;
+                        tripFound = true;
+
+                        // store the trip to remove locally
+                        Trip tripToMarkCompleted = tripsSnapshot.getValue(Trip.class);
+                        // add trip to Completed Trips table
+                        completedTripsReference.child(mAuth.getUid()).child(tripID).setValue(tripToMarkCompleted);
+                        // remove Trip from Booked Trips table
+                        bookedTripsReference.child(mAuth.getUid()).child(passengersSnapshot.getKey()).child(tripID).removeValue();
+                        Toast.makeText(ctx, "Trajet completé avec succes", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    public void markTripAsCompletedAndUpdateUI(Context ctx, ListView listView, String tripID){
-        // remove the trip from active trips and add it to completed trips
-        activeTripsReference.child(mAuth.getUid()).child(tripID).addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // First check that the trip exists
-                if (snapshot.exists()){
-                    // store the trip to remove locally
-                    Trip tripToMarkCompleted = snapshot.getValue(Trip.class);
-                    // add trip to Completed Trips table
-                    completedTripsReference.child(mAuth.getUid()).child(tripID).setValue(tripToMarkCompleted);
-                    // remove Trip from Active Trips table
-                    activeTripsReference.child(mAuth.getUid()).child(tripID).removeValue();
-                    Toast.makeText(ctx, "Trajet completé avec succes", Toast.LENGTH_SHORT).show();
+                if (!tripFound) {
+                    Log.e("TripsManager", "Trying to mark the trip (" + tripID + ") as completed but the trip was not found in BookedTrips db");
+                    return;
                 }
-                else {
-                    Log.e("TripsManager", "Trying to mark the trip ("+ tripID +") as completed but the trip was not found in ActiveTrips db");
-                }
-                updateActiveTripsListView(ctx, listView);
+                //TODO updateBookedTripsListView
+                updateDriverBookedTripsListView(ctx, lv_bookedTrips);
             }
 
             @Override
@@ -216,26 +196,30 @@ public class TripsManager {
         });
     }
 
-    public void markTripAsPaidToDriverAndUpdateUI(Context ctx, ListView listView, String tripID){
-        // remove the trip from completed trips and add it to archived trips
-        completedTripsReference.child(mAuth.getUid()).child(tripID).addListenerForSingleValueEvent(new ValueEventListener() {
+    // READ
 
+    public void displayTripDetails(Context ctx, Trip trip){
+        activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // First check that the trip exists
-                if (snapshot.exists()){
-                    // store the trip to remove locally
-                    Trip tripToMarkPaid = snapshot.getValue(Trip.class);
-                    // add trip to Completed Trips table
-                    archivedTripsReference.child(mAuth.getUid()).child(tripID).setValue(tripToMarkPaid);
-                    // remove Trip from Active Trips table
-                    completedTripsReference.child(mAuth.getUid()).child(tripID).removeValue();
-                    Log.d(TAG, "onDataChange: Trajet " + tripID + " marqué comme payé au conducteur avec succes.");
+                // Search for the driver of this trip
+                usersLoop:
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()){
+                        Log.d(TAG, "onDataChange: looking for trip " + trip.getId() + " on snapshot " + tripSnapshot.toString());
+                        if (!tripSnapshot.getKey().equals(trip.getId()))
+                            continue;
+                        Log.d(TAG, "onDataChange: found the trip");
+                        // send both trip and it's driver to TripDetailActivity
+                        String driverID = dataSnapshot.getKey();
+                        Intent intent = new Intent(ctx, TripsDetailsActivity.class);
+                        intent.putExtra("EXTRA_TRIP", trip);
+                        intent.putExtra("EXTRA_DRIVER_ID", driverID);
+                        ctx.startActivity(intent);
+
+                        break usersLoop;
+                    }
                 }
-                else {
-                    Log.e(TAG, "Trying to mark the trip "+ tripID +" as paid but the trip was not found in Completed Trips db");
-                }
-                updateActiveTripsListView(ctx, listView);
             }
 
             @Override
@@ -245,7 +229,7 @@ public class TripsManager {
         });
     }
 
-    public void updateActiveTripsListView(Context ctx, ListView listView){
+    public void updateActiveTripsListView(Context ctx, ListView lv_activeTrips){
         activeTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -259,12 +243,79 @@ public class TripsManager {
 
                     // update the list view
                     TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, activeTrips);
-                    listView.setAdapter(activeTripsAdapter);
+                    lv_activeTrips.setAdapter(activeTripsAdapter);
 
                 }else {
                     Log.w(TAG, "Trying to get active trips for user ["+ mAuth.getUid() +"] " +
                             "but no trips has been added yet.");
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void updateDriverBookedTripsListView(Context ctx, ListView lv_bookedTrips){
+        bookedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    Log.w(TAG, "Trying to get booked trips for user ["+ mAuth.getUid() +"] " +
+                            "but no trips have been booked yet.");
+                    return;
+                }
+
+                ArrayList<Trip> bookedTrips = new ArrayList<>();
+                for (DataSnapshot passengersSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripsSnapshot : passengersSnapshot.getChildren()){
+                        bookedTrips.add(tripsSnapshot.getValue(Trip.class));
+                    }
+                }
+                Log.d(TAG, "Got the following booked trips : " + bookedTrips.toString());
+
+                // update the list view
+                TripsAdapter bookedTripsAdapter = new TripsAdapter(ctx, bookedTrips);
+                lv_bookedTrips.setAdapter(bookedTripsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void updatePassengerBookedTripsListView(Context ctx, ListView lv_bookedTrips){
+        bookedTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    Log.w(TAG, "Trying to get booked trips for user ["+ mAuth.getUid() +"] " +
+                            "but no trips have been booked yet.");
+                    return;
+                }
+
+                ArrayList<Trip> bookedTrips = new ArrayList<>();
+                for (DataSnapshot driversSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripsSnapshot : driversSnapshot.child(mAuth.getUid()).getChildren()){
+                        if (tripsSnapshot.exists())
+                            bookedTrips.add(tripsSnapshot.getValue(Trip.class));
+                    }
+                }
+                if (bookedTrips.isEmpty()){
+                    Log.w(TAG, "Trying to get booked trips for user ["+ mAuth.getUid() +"] " +
+                            "but no trips have been booked yet.");
+                    return;
+                }
+
+                Log.d(TAG, "Got the following booked trips : " + bookedTrips);
+
+                // update the list view
+                TripsAdapter bookedTripsAdapter = new TripsAdapter(ctx, bookedTrips);
+                lv_bookedTrips.setAdapter(bookedTripsAdapter);
             }
 
             @Override
@@ -302,35 +353,6 @@ public class TripsManager {
         });
     }
 
-    public void updateArchivedTripsListView(Context ctx, ListView lv_archivedTrips) {
-        archivedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Trip> archivedTrips = new ArrayList<>();
-                if (snapshot.exists()){
-                    // get all trips
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        archivedTrips.add(dataSnapshot.getValue(Trip.class));
-                    }
-                    Log.d(TAG, "Got the following archived trips : " + archivedTrips.toString());
-
-                    // update the list view
-                    TripsAdapter activeTripsAdapter = new TripsAdapter(ctx, archivedTrips);
-                    lv_archivedTrips.setAdapter(activeTripsAdapter);
-
-                }else {
-                    Log.w(TAG, "Trying to get archived trips for user ["+ mAuth.getUid() +"] " +
-                            "but no trips has been added yet.");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
     public void searchForTripsAndDisplayResult(Context ctx, String startCity, String endCity, String date, String startTime) {
         activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -338,6 +360,9 @@ public class TripsManager {
                 ArrayList<Trip> result = new ArrayList<>();
                 // look for the active trips
                 for (DataSnapshot driversSnapshot : snapshot.getChildren()){
+                    // skip the trips that are published by the same user
+                    if (driversSnapshot.getKey().equals(mAuth.getUid()))
+                        continue;
                     for (DataSnapshot tripsSnapshot : driversSnapshot.getChildren()){
                         Trip currentlyFoundTrip = tripsSnapshot.getValue(Trip.class);
                         // check if the trip fits search criteria
@@ -362,9 +387,5 @@ public class TripsManager {
 
             }
         });
-    }
-
-    public void bookTrip(Context ctx, Trip trip) {
-        Toast.makeText(ctx, "Booking trip " + trip.toString(), Toast.LENGTH_SHORT).show();
     }
 }
