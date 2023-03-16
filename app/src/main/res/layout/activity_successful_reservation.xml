@@ -6,10 +6,15 @@
     android:paddingLeft="20dp"
     android:paddingTop="20dp"
     android:gravity="center"
-
     >
+        <ImageView
+            android:id="@+id/iv_Animation"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_driver"
+                />
         <TextView
-            android:id="@+id/tv_departCity"
+            android:id="@+id/tv_reservation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -17,7 +22,6 @@
             android:text="Votre trajet a été réservé avec succés "
             android:layout_gravity="center"
             />
-
         <Button
             android:id="@+id/btn_return"
             android:layout_width="wrap_content"
