@@ -68,7 +68,6 @@
             android:text=""
             android:layout_weight="1"
             android:paddingLeft="10px"
-
             />
     </LinearLayout>
 </LinearLayout>
