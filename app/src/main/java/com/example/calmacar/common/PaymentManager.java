@@ -1,7 +1,6 @@
 package com.example.calmacar.common;
 
 import android.content.Context;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,10 +15,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.Inflater;
 
 public class PaymentManager {
     private static PaymentManager instance;
@@ -70,7 +67,7 @@ public class PaymentManager {
                 updateDriverPaymentsListView(ctx, lv_payments);
                 mBalance.setValue(0);
                 tv_balance.setText("0.00€");
-                TripsManager.getInstance().updateCompletedTripsListView(ctx, lv_completedTrips);
+                TripsManager.getInstance().updateDriverCompletedTripsListView(ctx, lv_completedTrips);
                 Toast.makeText(ctx, "Paiement envoyé avec succes.", Toast.LENGTH_SHORT).show();
             }
 
@@ -83,14 +80,17 @@ public class PaymentManager {
     }
 
     public void updateDriverAvailableBalance(Context ctx, TextView balance){
+        // IMPORTANT mAuth.getUid() is the driver's ID
         completedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 float totalBalance = 0;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    if (!dataSnapshot.child("price").exists())
-                        continue;
-                    totalBalance += dataSnapshot.child("price").getValue(Float.TYPE);
+                for (DataSnapshot passengerSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripSnapshot : passengerSnapshot.getChildren()){
+                        if (!tripSnapshot.child("price").exists())
+                            continue;
+                        totalBalance += tripSnapshot.child("price").getValue(Float.TYPE);
+                    }
                 }
                 mBalance.setValue(totalBalance);
                 balance.setText(totalBalance + "€");

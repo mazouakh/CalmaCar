@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.calmacar.R;
 import com.example.calmacar.common.Balance;
-import com.example.calmacar.common.Formatter;
 import com.example.calmacar.common.PaymentManager;
 import com.example.calmacar.common.TripsManager;
 
@@ -89,19 +87,18 @@ public class WalletFragment extends Fragment {
         btn_requestPayment = view.findViewById(R.id.btn_requestPayment);
 
         // UpdateUI
-        tripsManager.updateCompletedTripsListView(
-                getActivity().getApplicationContext(),
+        tripsManager.updateDriverCompletedTripsListView(
+                getActivity(),
                 lv_completedTrips);
 
         paymentManager.updateDriverAvailableBalance(
-                getActivity().getApplicationContext(),
+                getActivity(),
                 tv_balance);
 
         paymentManager.updateDriverPaymentsListView(getActivity(), lv_payments);
 
         // Click Listeners
         btn_requestPayment.setOnClickListener(new View.OnClickListener() {
-            // TODO get the list of
             @Override
             public void onClick(View view) {
                 if (Balance.getInstance().getValue() <= 0){

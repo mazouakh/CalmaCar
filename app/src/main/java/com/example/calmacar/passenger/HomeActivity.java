@@ -57,17 +57,27 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
         switch (item.getItemId()) {
             case R.id.nav_home:
                 // show home fragment
-                // if profile fragment is already loaded, then return
+                // if home fragment is already loaded, then return
                 if (getSupportFragmentManager().findFragmentById(R.id.frag_container) instanceof TripsSearchFragment)
                     break;
 
-                // Load profile fragment
+                // Load home fragment
                 getSupportFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.frag_container, TripsSearchFragment.newInstance("", ""))
                         .commit();
                 break;
+            case R.id.nav_tripsHistory:
+                // if History fragment is already loaded, then return
+                if (getSupportFragmentManager().findFragmentById(R.id.frag_container) instanceof ReservationsHistoryFragment)
+                    break;
 
+                // Load History fragment
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.frag_container, ReservationsHistoryFragment.newInstance("", ""))
+                        .commit();
+                break;
             case R.id.nav_profile:
                 // show profile fragment
                 // if profile fragment is already loaded, then return
@@ -88,6 +98,7 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
                 finish();
                 break;
             case R.id.nav_driver:
+                // Switch to driver app
                 Intent intentPassenger = new Intent(this, com.example.calmacar.driver.HomeActivity.class);
                 startActivity(intentPassenger);
                 finish();
