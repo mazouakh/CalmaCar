@@ -30,7 +30,7 @@ public class PaymentsAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return payments.get(i);
     }
 
     @Override

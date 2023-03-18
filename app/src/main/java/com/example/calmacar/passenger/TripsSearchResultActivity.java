@@ -2,26 +2,20 @@ package com.example.calmacar.passenger;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.calmacar.R;
 import com.example.calmacar.common.Trip;
 import com.example.calmacar.common.TripsManager;
 import com.example.calmacar.common.TripsSearchResultAdapter;
 
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class TripsSearchResultActivity extends AppCompatActivity {
@@ -79,7 +73,7 @@ public class TripsSearchResultActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("TSRA", "onItemClick: item " + i + " clicked");
                 Trip trip = (Trip) lv_searchResult.getAdapter().getItem(i);
-                TripsManager.getInstance().displayTripDetails(TripsSearchResultActivity.this, trip);
+                TripsManager.getInstance().displayActiveTripDetails(TripsSearchResultActivity.this, trip);
             }
         });
 

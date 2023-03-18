@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.calmacar.R;
+import com.example.calmacar.common.Trip;
 import com.example.calmacar.common.TripsManager;
 
 /**
@@ -90,6 +92,13 @@ public class TripsFragment extends Fragment {
                         getActivity().getApplicationContext(),
                         lv_bookedTrips,
                         et_tripID.getText().toString());
+            }
+        });
+        lv_bookedTrips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Trip trip = (Trip) lv_bookedTrips.getAdapter().getItem(i);
+                tripsManager.displayDriverBookedTripDetails(getActivity(), trip);
             }
         });
 

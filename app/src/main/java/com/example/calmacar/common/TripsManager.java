@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.calmacar.driver.PassengerDetailsActivity;
+import com.example.calmacar.passenger.DriverDetailsActivity;
 import com.example.calmacar.passenger.SuccessfulReservationActivity;
 import com.example.calmacar.passenger.TripsDetailsActivity;
 import com.example.calmacar.passenger.TripsSearchResultActivity;
@@ -216,7 +218,7 @@ public class TripsManager {
 
     // READ
 
-    public void displayTripDetails(Context ctx, Trip trip){
+    public void displayActiveTripDetails(Context ctx, Trip trip){
         activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -233,6 +235,76 @@ public class TripsManager {
                         Intent intent = new Intent(ctx, TripsDetailsActivity.class);
                         intent.putExtra("EXTRA_TRIP", trip);
                         intent.putExtra("EXTRA_DRIVER_ID", driverID);
+                        ctx.startActivity(intent);
+
+                        break usersLoop;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void displayPassengerBookedTripDetails(Context ctx, Trip trip){
+        // IMPORTANT mAuth.getUid() is the passenger's ID
+        bookedTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Search for the driver of this trip
+                usersLoop:
+                for (DataSnapshot driverSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripSnapshot : driverSnapshot.child(mAuth.getUid()).getChildren()){
+                        Log.d(TAG, "onDataChange: looking for trip " + trip.getId() + " on snapshot " + tripSnapshot.toString());
+                        if (!tripSnapshot.getKey().equals(trip.getId()))
+                            continue;
+                        Log.d(TAG, "onDataChange: found the trip");
+
+                        // look for driver
+
+
+                        // send both trip and it's driver to TripDetailActivity
+                        String driverID = driverSnapshot.getKey();
+                        Intent intent = new Intent(ctx, DriverDetailsActivity.class);
+                        intent.putExtra("EXTRA_TRIP", trip);
+                        intent.putExtra("EXTRA_DRIVER_ID", driverID);
+                        ctx.startActivity(intent);
+
+                        break usersLoop;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void displayDriverBookedTripDetails(Context ctx, Trip trip){
+        // IMPORTANT mAuth.getUid() is the driver's ID
+        bookedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Search for the driver of this trip
+                usersLoop:
+                for (DataSnapshot passengerSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripSnapshot : passengerSnapshot.getChildren()){
+                        Log.d(TAG, "onDataChange: looking for trip " + trip.getId() + " on snapshot " + tripSnapshot.toString());
+                        if (!tripSnapshot.getKey().equals(trip.getId()))
+                            continue;
+                        Log.d(TAG, "onDataChange: found the trip");
+
+                        // TODO try to have one common activity for displaying trip details
+                        // send both trip and it's driver to TripDetailActivity
+                        String passengerID = passengerSnapshot.getKey();
+                        Intent intent = new Intent(ctx, PassengerDetailsActivity.class);
+                        intent.putExtra("EXTRA_TRIP", trip);
+                        intent.putExtra("EXTRA_PASSENGER_ID", passengerID);
                         ctx.startActivity(intent);
 
                         break usersLoop;

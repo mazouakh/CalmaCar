@@ -12,6 +12,12 @@
         android:theme="@style/Theme.CalmaCar"
         tools:targetApi="31">
         <activity
+            android:name=".driver.PassengerDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".passenger.DriverDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".passenger.SuccessfulReservationActivity"
             android:exported="false" />
         <activity

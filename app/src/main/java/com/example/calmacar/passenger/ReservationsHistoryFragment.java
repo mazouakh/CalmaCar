@@ -4,12 +4,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.calmacar.R;
+import com.example.calmacar.common.Trip;
 import com.example.calmacar.common.TripsManager;
 
 /**
@@ -78,6 +81,16 @@ public class ReservationsHistoryFragment extends Fragment {
         // Initialize ListView values
         mTripsManager.updatePassengerBookedTripsListView(getActivity(), lv_bookedTrips);
         mTripsManager.updatePassengerCompletedTripsListView(getActivity(), lv_completedTrips);
+
+        // Click Listeners
+        lv_bookedTrips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Trip trip = (Trip) lv_bookedTrips.getAdapter().getItem(i);
+                Log.d("RHF", "onItemClick: Trip : " + trip);
+                mTripsManager.displayPassengerBookedTripDetails(getActivity(), trip);
+            }
+        });
 
         return view;
     }
