@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:gravity="center"
+    >
+        <ImageView
+            android:id="@+id/iv_Animation"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_driver"
+                />
+        <TextView
+            android:id="@+id/tv_reservation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            android:text="Votre trajet a été réservé avec succés "
+            android:layout_gravity="center"
+            />
+        <Button
+            android:id="@+id/btn_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="150dp"
+            android:text="Retour"
+            />
+
+</LinearLayout>

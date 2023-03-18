@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.calmacar.R;
 import com.example.calmacar.common.User;
-import com.example.calmacar.driver.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -69,6 +68,7 @@ public class AuthActivity extends AppCompatActivity {
                 LoginUser(intent.getExtras());
             }
         };
+
         registerReceiver(loginReceiver, loginFilter);
 
         IntentFilter signupFilter = new IntentFilter("DATA_SIGNUP");
@@ -340,7 +340,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void redirectToDashboard(String userType){
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, userType.equals("Conducteur") ? com.example.calmacar.driver.HomeActivity.class : com.example.calmacar.passenger.HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("EXTRA_USERTYPE", userType);
         this.startActivity(intent);

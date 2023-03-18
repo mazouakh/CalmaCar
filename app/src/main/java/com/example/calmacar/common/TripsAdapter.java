@@ -30,7 +30,7 @@ public class TripsAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return trips.get(i);
     }
 
     @Override

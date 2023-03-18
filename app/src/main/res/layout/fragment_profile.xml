@@ -54,10 +54,11 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/et_firstname"
+                android:id="@+id/et_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
+                android:inputType="text"
                 android:layout_marginTop="20dp"/>
 
             <TextView
@@ -69,9 +70,10 @@
                 android:layout_marginTop="20dp"/>
 
             <EditText
-                android:id="@+id/et_lastname"
+                android:id="@+id/et_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
                 android:textSize="16sp"
                 android:layout_marginTop="20dp"/>
 
@@ -87,6 +89,7 @@
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="phone"
                 android:textSize="16sp"/>
 
             <Button
