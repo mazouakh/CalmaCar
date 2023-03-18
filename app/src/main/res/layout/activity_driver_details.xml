@@ -7,7 +7,7 @@
     android:paddingRight="20dp"
     android:paddingLeft="20dp"
     android:paddingTop="20dp"
-    tools:context=".passenger.DriverDetailsActivity">
+    tools:context=".passenger.view.DriverDetailsActivity">
     <LinearLayout
         android:id="@+id/ly"
         android:layout_width="match_parent"

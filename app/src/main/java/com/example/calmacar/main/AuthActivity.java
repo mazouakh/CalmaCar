@@ -16,7 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calmacar.R;
-import com.example.calmacar.common.User;
+import com.example.calmacar.common.model.User;
+import com.example.calmacar.driver.view.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -256,34 +257,6 @@ public class AuthActivity extends AppCompatActivity {
                 if(!checkEmailIsVerified(firebaseUser))
                     return;
 
-                // Check if the user is logging in in the category that he is signed up to
-                /*
-                // Get the Registered Users table reference from the database
-                DatabaseReference usersReference = FirebaseDatabase
-                        .getInstance("https://calmacar-default-rtdb.europe-west1.firebasedatabase.app")
-                        .getReference("Registered Users");
-                usersReference.child(authProfile.getUid()).child("userType").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String firebaseUserType = task.getResult().getValue(String.class);
-
-                        // if user is registered but not in the currently chosen subscription type
-                        if (!firebaseUserType.equals(userType)){
-                            Toast.makeText(AuthActivity.this,
-                                    "Vous n'etes pas inscrit en tant que "
-                                            + userType + ".\n"
-                                            + "Veuillez retourner et choisir la bonne categorie ou vous inscrire en tant que "
-                                            + userType + ".",
-                                    Toast.LENGTH_LONG).show();
-                            authProfile.signOut();
-                            return;
-                        }
-
-                        // redirect to Driver Dashboard
-                        redirectToDashboard(firebaseUserType);
-                    }
-                });*/
-
                 // All went well
                 Toast.makeText(AuthActivity.this, "Connexion avec success", Toast.LENGTH_SHORT).show();
                 redirectToDashboard(userType);
@@ -340,7 +313,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void redirectToDashboard(String userType){
-        Intent intent = new Intent(this, userType.equals("Conducteur") ? com.example.calmacar.driver.HomeActivity.class : com.example.calmacar.passenger.HomeActivity.class);
+        Intent intent = new Intent(this, userType.equals("Conducteur") ? HomeActivity.class : com.example.calmacar.passenger.view.HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("EXTRA_USERTYPE", userType);
         this.startActivity(intent);

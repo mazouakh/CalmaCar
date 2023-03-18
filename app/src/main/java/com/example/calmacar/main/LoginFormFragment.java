@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.calmacar.R;
-import com.example.calmacar.common.Validator;
+import com.example.calmacar.utils.Validator;
 
 /**
  * A simple {@link Fragment} subclass.
