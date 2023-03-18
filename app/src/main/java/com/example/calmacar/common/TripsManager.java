@@ -495,6 +495,7 @@ public class TripsManager {
                         continue;
                     for (DataSnapshot tripsSnapshot : driversSnapshot.getChildren()){
                         Trip currentlyFoundTrip = tripsSnapshot.getValue(Trip.class);
+
                         // check if the trip fits search criteria
                         if (!currentlyFoundTrip.getStartCity().equals(startCity) |
                         !currentlyFoundTrip.getEndCity().equals(endCity) |

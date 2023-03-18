@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class PickerManager {
@@ -56,6 +55,9 @@ public class PickerManager {
     }
 
     public void displayDatePicker(Context ctx, Button btn_datePicker){
+        // getting the currently selected Date from the btn text
+        int[] currentlySelectedDate = mFormatter.splitDateToInts(btn_datePicker.getText().toString());
+
         DatePickerDialog dialog = new DatePickerDialog(
                 ctx,
                 new DatePickerDialog.OnDateSetListener() {
@@ -63,19 +65,24 @@ public class PickerManager {
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         btn_datePicker.setText(mFormatter.formatDate(year, month, day));
                     }
-                },
-                mTimeManager.getYear(), mTimeManager.getMonth(), mTimeManager.getDay());
+                }, currentlySelectedDate[0], currentlySelectedDate[1], currentlySelectedDate[2]);
+
+        // limiting date picker to today's date and forward
+        dialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
 
         dialog.show();
     }
 
     public void displayTimePicker(Context ctx, Button btn_timePicker){
+        // getting the currently selected Date from the btn text
+        int[] currentlySelectedTime = mFormatter.splitTimeToInts(btn_timePicker.getText().toString());
         TimePickerDialog dialog = new TimePickerDialog(ctx, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
                 btn_timePicker.setText(mFormatter.formatTime(hours, minutes));
             }
-        }, mTimeManager.getHour(), mTimeManager.getMinute(), true);
+        }, currentlySelectedTime[0], currentlySelectedTime[1], true);
+
         dialog.show();
     }
 }

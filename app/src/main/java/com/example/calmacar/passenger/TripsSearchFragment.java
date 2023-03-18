@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.calmacar.R;
+import com.example.calmacar.common.Formatter;
 import com.example.calmacar.common.PickerManager;
 import com.example.calmacar.common.TripsManager;
 import com.example.calmacar.common.Validator;
@@ -38,6 +39,7 @@ public class TripsSearchFragment extends Fragment {
     private PickerManager mPickerManager;
     private TripsManager mTripsManager;
     private Validator mValidator;
+    private Formatter mFormatter;
 
     public TripsSearchFragment() {
         // Required empty public constructor
@@ -73,6 +75,7 @@ public class TripsSearchFragment extends Fragment {
         mPickerManager = PickerManager.getInstance();
         mTripsManager = TripsManager.getInstance();
         mValidator = Validator.getInstance();
+        mFormatter = Formatter.getInstance();
     }
 
     @Override
@@ -131,8 +134,8 @@ public class TripsSearchFragment extends Fragment {
         // Ask TripsManager to search for a trip
         mTripsManager.searchForTripsAndDisplayResult(
                 getActivity(),
-                et_startCity.getText().toString(),
-                et_endCity.getText().toString(),
+                mFormatter.capitalize(et_startCity.getText().toString().trim().toLowerCase()),
+                mFormatter.capitalize(et_endCity.getText().toString().trim().toLowerCase()),
                 btn_date.getText().toString(),
                 btn_startTime.getText().toString());
     }

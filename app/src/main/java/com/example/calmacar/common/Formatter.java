@@ -5,8 +5,6 @@ import android.icu.text.DecimalFormatSymbols;
 import android.icu.text.NumberFormat;
 
 import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class Formatter {
 
@@ -51,6 +49,28 @@ public class Formatter {
         return dayText + " " + monthText + " " + yearText;
     }
 
+    /**
+     * convert a date in the format "01 JAN 2023" to ints
+     * @param date
+     * @return an array where
+     * element 0 is the year
+     * element 1 is the month
+     * element 2 is the day
+     */
+    public int[] splitDateToInts(String date){
+        String[] dateElements= date.split(" ");
+        int[] dateInts = new int[dateElements.length];
+
+        // year
+        dateInts[0] = Integer.parseInt(dateElements[2]);
+        // month
+        dateInts[1] = monthTextToIndex(dateElements[1]);
+        // day
+        dateInts[2] = Integer.parseInt(dateElements[0]);
+
+        return  dateInts;
+    }
+
     public String formatTime(int hours, int minutes) {
         String hoursText = hours < 10 ? "0" + hours : String.valueOf(hours);
         String minutesText = minutes < 10 ? "0" + minutes : String.valueOf(minutes);
@@ -58,7 +78,28 @@ public class Formatter {
         return hoursText + ":" + minutesText;
     }
 
-    public String monthIndexToText(int idx){
+    public int[] splitTimeToInts(String time) {
+        String[] timeElements= time.split(":");
+        int[] timeInts = new int[timeElements.length];
+
+        // hours
+        timeInts[0] = Integer.parseInt(timeElements[0]);
+        // minutes
+        timeInts[1] = Integer.parseInt(timeElements[1]);
+
+        return  timeInts;
+    }
+
+    public int timeToInt(String time){
+        String timeText = time.replace(":", "");
+        return Integer.parseInt(timeText);
+    }
+
+    public String capitalize(String str){
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    private String monthIndexToText(int idx){
         switch (idx){
             case 0:
                 return "JAN";
@@ -89,8 +130,34 @@ public class Formatter {
         }
     }
 
-    public int timeToInt(String time){
-        String timeText = time.replace(":", "");
-        return Integer.parseInt(timeText);
+    private int monthTextToIndex(String month){
+        switch (month){
+            case "JAN":
+                return 0;
+            case "FEV":
+                return 1;
+            case "MAR":
+                return 2;
+            case "AVR":
+                return 3;
+            case "MAI":
+                return 4;
+            case "JUN":
+                return 5;
+            case "JUL":
+                return 6;
+            case "AUG":
+                return 7;
+            case "SEP":
+                return 8;
+            case "OCT":
+                return 9;
+            case "NOV":
+                return 10;
+            case "DEC":
+                return 11;
+            default:
+                return -1;
+        }
     }
 }

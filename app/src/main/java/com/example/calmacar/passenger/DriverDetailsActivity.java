@@ -72,6 +72,6 @@ public class DriverDetailsActivity extends AppCompatActivity {
         tv_tripDescription.setText(trip.getDescription());
 
         // update driver details
-        mUserManager.updateDriverDetails(driverID, tv_driverName, tv_driverPhone);
+        mUserManager.displayDriverDetails(driverID, tv_driverName, tv_driverPhone);
     }
 }

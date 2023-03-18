@@ -43,6 +43,7 @@ public class CreateTripFragment extends Fragment {
     private TripsManager tripsManager;
     private PickerManager pickerManager;
     private Validator validator;
+    private Formatter formatter;
 
     public CreateTripFragment() {
         // Required empty public constructor
@@ -77,6 +78,7 @@ public class CreateTripFragment extends Fragment {
         tripsManager = TripsManager.getInstance();
         pickerManager = PickerManager.getInstance();
         validator = Validator.getInstance();
+        formatter = Formatter.getInstance();
     }
 
     @Override
@@ -179,8 +181,8 @@ public class CreateTripFragment extends Fragment {
 
         // Create new trip
         Trip newTrip = new Trip(
-                et_startCity.getText().toString(),
-                et_endCity.getText().toString(),
+                formatter.capitalize(et_startCity.getText().toString().trim().toLowerCase()),
+                formatter.capitalize(et_endCity.getText().toString().trim().toLowerCase()),
                 btn_date.getText().toString(),
                 btn_startTime.getText().toString(),
                 btn_endTime.getText().toString(),
@@ -188,7 +190,7 @@ public class CreateTripFragment extends Fragment {
                 et_description.getText().toString());
 
         tripsManager.createNewTrip(
-                getActivity().getApplicationContext(),
+                getActivity(),
                 newTrip);
 
         resetForm();
@@ -199,8 +201,9 @@ public class CreateTripFragment extends Fragment {
         et_endCity.setText("");
         et_price.setText("");
         et_description.setText("");
-        btn_date.setText("01 JAN 2023");
-        btn_startTime.setText("00:00");
-        btn_endTime.setText("00:00");
+        // initialization of picker buttons text
+        pickerManager.initializeDatePickerButton(btn_date);
+        pickerManager.initializeTimePickerButton(btn_startTime);
+        pickerManager.initializeTimePickerButton(btn_endTime);
     }
 }

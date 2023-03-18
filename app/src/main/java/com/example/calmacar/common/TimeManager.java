@@ -21,7 +21,7 @@ public class TimeManager {
     }
 
     public int getMonth(){
-        return Integer.parseInt(sdf.format(Calendar.getInstance().getTime()).split("-")[1]);
+        return Integer.parseInt(sdf.format(Calendar.getInstance().getTime()).split("-")[1]) - 1;
     }
 
     public int getDay(){

@@ -77,7 +77,7 @@ public class TripsDetailsActivity extends AppCompatActivity {
         tv_arrivalCity.setText(trip.getEndCity());
         tv_departTime.setText(trip.getStartTime());
         tv_arrivalTime.setText(trip.getEndTime());
-        tv_price.setText(String.valueOf(trip.getPrice()));
+        tv_price.setText(trip.getPrice() + "€");
         tv_tripDescription.setText(trip.getDescription());
 
         // update driver details

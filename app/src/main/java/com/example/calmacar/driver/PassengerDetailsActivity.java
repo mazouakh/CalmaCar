@@ -72,6 +72,6 @@ public class PassengerDetailsActivity extends AppCompatActivity {
         tv_tripDescription.setText(trip.getDescription());
 
         // update driver details
-        mUserManager.updatePassengerDetails(passengerID, tv_passengerName, tv_passengerPhone);
+        mUserManager.displayPassengerDetails(passengerID, tv_passengerName, tv_passengerPhone);
     }
 }
