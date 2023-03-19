@@ -164,6 +164,7 @@ public class AuthManager {
                     mAuth.getCurrentUser().sendEmailVerification();
                     mAuth.signOut();
                     showEmailNotVerifiedAlertDialogue(ctx);
+return;
                 }
 
                 // All went well
