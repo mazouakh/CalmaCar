@@ -35,4 +35,20 @@ public class User {
         this.userType = userType;
         this.phone = phone;
     }
+
+    /**
+     * Updated version with no user type since a user can be both passenger and driver with
+     * the same account
+     * @param uid
+     * @param firstname
+     * @param lastname
+     * @param phone
+     */
+    public User(String uid, String firstname, String lastname, String phone){
+        this.uid = uid;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.userType = userType;
+        this.phone = phone;
+    }
 }

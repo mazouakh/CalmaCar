@@ -13,9 +13,9 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.example.calmacar.R;
-import com.example.calmacar.utils.Auth;
+import com.example.calmacar.main.model.AuthManager;
 import com.example.calmacar.common.view.ProfileFragment;
-import com.example.calmacar.main.MainActivity;
+import com.example.calmacar.main.view.MainActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
                 break;
             case R.id.nav_logout:
                 // Logout user
-                Auth.getInstance().logout();
+                AuthManager.getInstance().logout();
                 Intent intentLogout = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intentLogout);
                 finish();

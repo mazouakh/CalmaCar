@@ -1,4 +1,4 @@
-package com.example.calmacar.main;
+package com.example.calmacar.main.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 

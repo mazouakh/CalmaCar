@@ -28,6 +28,7 @@ public class UserManager {
     }
 
 
+    // TODO replace these 3 methods by a single one that displays User Details
 
     public void displayUserFirstName(String id, TextView tv_firstName){
         registeredUsersReference.child(id).addListenerForSingleValueEvent(new ValueEventListener() {

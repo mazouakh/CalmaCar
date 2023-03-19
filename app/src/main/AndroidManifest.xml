@@ -37,10 +37,10 @@
             android:theme="@style/Theme.CalmaCar.Toolbar"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
-            android:name=".main.AuthActivity"
+            android:name=".main.view.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".main.MainActivity"
+            android:name=".main.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.calmacar.main;
+package com.example.calmacar.main.view;
 
 import android.content.Intent;
 import android.os.Bundle;
