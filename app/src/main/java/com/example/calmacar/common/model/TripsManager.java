@@ -111,7 +111,7 @@ public class TripsManager {
                         // add trip to booked node
                         bookedTripsReference.child(driversSnapshot.getKey()).child(mAuth.getUid()).child(tripsSnapshot.getKey()).setValue(tripToBook);
                         // remove trip from active trip (a trip is no longer available after it's booked)
-                        activeTripsReference.child(tripsSnapshot.getKey()).child(tripsSnapshot.getKey()).removeValue();
+                        activeTripsReference.child(driversSnapshot.getKey()).child(tripsSnapshot.getKey()).removeValue();
                         Toast.makeText(ctx, "Trajet reservé avec succes", Toast.LENGTH_SHORT).show();
 
                         // open SuccessfulReservation Activity
@@ -171,7 +171,8 @@ public class TripsManager {
                     return;
                 }
                 //TODO should this be kept of will the trip completion occur elsewhere then in the driver's trips fragment?
-                updateDriverBookedTripsListView(ctx, lv_bookedTrips);
+                if (lv_bookedTrips != null)
+                    displayDriverBookedTrips(ctx, lv_bookedTrips);
             }
 
             @Override
@@ -218,8 +219,65 @@ public class TripsManager {
         });
     }
 
-    // READ
+    /**
+     * looks for all the trips that have a date less then today's date.
+     * If the trip is booked, moves it to completed trips.
+     * If the trip is not booked, moves it to archived trips.
+     */
+    public void handleOutdatedTrips(){
+        activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                for (DataSnapshot driverSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot tripSnapshot : driverSnapshot.getChildren()){
+                        Trip trip = tripSnapshot.getValue(Trip.class);
+                        if (!trip.isOutdated())
+                            continue;
+
+                        // move it to archived trips
+                        archivedTripsReference.child(driverSnapshot.getKey()).child(trip.getId()).setValue(trip);
+                        activeTripsReference.child(driverSnapshot.getKey()).child(trip.getId()).removeValue();
+
+                        Log.d(TAG, "onDataChange: Archived trip : " + trip);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        bookedTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot driverSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot passengerSnapshot : driverSnapshot.getChildren()){
+                        for (DataSnapshot tripSnapshot : passengerSnapshot.getChildren()){
+                            Trip trip = tripSnapshot.getValue(Trip.class);
+                            if (!trip.isOutdated())
+                                continue;
+
+                            // move it to completed trips
+                            completedTripsReference.child(driverSnapshot.getKey()).child(passengerSnapshot.getKey()).child(trip.getId()).setValue(trip);
+                            bookedTripsReference.child(driverSnapshot.getKey()).child(passengerSnapshot.getKey()).child(trip.getId()).removeValue();
+
+                            Log.d(TAG, "onDataChange: Completed trip : " + trip);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    // READ
     public void displayActiveTripDetails(Context ctx, Trip trip){
         activeTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -321,7 +379,7 @@ public class TripsManager {
         });
     }
 
-    public void updateActiveTripsListView(Context ctx, ListView lv_activeTrips){
+    public void displayActiveTrips(Context ctx, ListView lv_activeTrips){
         activeTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -350,7 +408,7 @@ public class TripsManager {
         });
     }
 
-    public void updateDriverBookedTripsListView(Context ctx, ListView lv_bookedTrips){
+    public void displayDriverBookedTrips(Context ctx, ListView lv_bookedTrips){
         // IMPORTANT mAuth.getUid() is the driver's ID
         bookedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -381,7 +439,7 @@ public class TripsManager {
         });
     }
 
-    public void updatePassengerBookedTripsListView(Context ctx, ListView lv_bookedTrips){
+    public void displayPassengerBookedTrips(Context ctx, ListView lv_bookedTrips){
         // IMPORTANT mAuth.getUid() is the passenger's ID
         bookedTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -419,7 +477,7 @@ public class TripsManager {
         });
     }
 
-    public void updateDriverCompletedTripsListView(Context ctx, ListView listView){
+    public void displayDriverCompletedTrips(Context ctx, ListView listView){
         completedTripsReference.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -449,7 +507,7 @@ public class TripsManager {
         });
     }
 
-    public void updatePassengerCompletedTripsListView(Context ctx, ListView lv_completedTrips){
+    public void displayPassengerCompletedTrips(Context ctx, ListView lv_completedTrips){
         // IMPORTANT mAuth.getUid() is the passenger's ID
         completedTripsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

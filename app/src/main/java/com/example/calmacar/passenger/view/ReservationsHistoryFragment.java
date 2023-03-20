@@ -79,8 +79,8 @@ public class ReservationsHistoryFragment extends Fragment {
         lv_completedTrips = view.findViewById(R.id.lv_completedTrips);
 
         // Initialize ListView values
-        mTripsManager.updatePassengerBookedTripsListView(getActivity(), lv_bookedTrips);
-        mTripsManager.updatePassengerCompletedTripsListView(getActivity(), lv_completedTrips);
+        mTripsManager.displayPassengerBookedTrips(getActivity(), lv_bookedTrips);
+        mTripsManager.displayPassengerCompletedTrips(getActivity(), lv_completedTrips);
 
         // Click Listeners
         lv_bookedTrips.setOnItemClickListener(new AdapterView.OnItemClickListener() {

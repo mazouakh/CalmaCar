@@ -2,12 +2,16 @@ package com.example.calmacar.common.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.calmacar.utils.Formatter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 
 public class Trip implements Parcelable {
     private String id, startCity, endCity, date, startTime, endTime, description;
@@ -68,6 +72,28 @@ public class Trip implements Parcelable {
             return false;
         Formatter formatter = Formatter.getInstance();
         return formatter.timeToInt(this.startTime) >= formatter.timeToInt(other);
+    }
+
+    public boolean isOutdated() {
+        // formatting the trip date into a comparable format
+        Formatter formatter = Formatter.getInstance();
+        int[] dateInts = formatter.splitDateToInts(date);
+        String tripDate =  dateInts[2] + "-" + dateInts[1] + 1 + "-" + dateInts[0];
+
+        // converting into a date object
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        boolean outdated = false;
+        Date strDate;
+        try {
+            strDate = sdf.parse(tripDate);
+            outdated = new Date().after(strDate);
+        }catch (ParseException e){
+            Log.e("Trip", "isOutdated: Could not parse trip's date into the format dd-MM-yyyy. Trip's date : " + tripDate);
+        }
+
+        // comparing to current local date
+        return outdated;
     }
 
     // Parcelable Implementation

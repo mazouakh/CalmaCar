@@ -69,7 +69,7 @@ public class PaymentManager {
                 updateDriverPaymentsListView(ctx, lv_payments);
                 mBalance.setValue(0);
                 tv_balance.setText("0.00€");
-                TripsManager.getInstance().updateDriverCompletedTripsListView(ctx, lv_completedTrips);
+                TripsManager.getInstance().displayDriverCompletedTrips(ctx, lv_completedTrips);
                 Toast.makeText(ctx, "Paiement envoyé avec succes.", Toast.LENGTH_SHORT).show();
             }
 

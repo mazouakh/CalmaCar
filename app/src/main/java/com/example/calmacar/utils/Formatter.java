@@ -5,11 +5,14 @@ import android.icu.text.DecimalFormatSymbols;
 import android.icu.text.NumberFormat;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 
 public class Formatter {
 
     private static Formatter instance;
     private NumberFormat priceFormatter;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private Formatter(){
         // Creating a price formatter with € currency symbol
@@ -47,6 +50,15 @@ public class Formatter {
 
 
         return dayText + " " + monthText + " " + yearText;
+    }
+
+    /**
+     * Converts a date from the format "01 JAN 2023" to "01-01-2023"
+     * @return
+     */
+    public String toStandardDate(String toConvert){
+        int[] dateInts = splitDateToInts(toConvert);
+        return dateInts[2] + "-" + dateInts[1] + 1 + "-" + dateInts[0];
     }
 
     /**

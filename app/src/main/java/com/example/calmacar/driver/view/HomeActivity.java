@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 if (getSupportFragmentManager().findFragmentById(R.id.frag_home) instanceof HomeFragment)
                     break;
 
-                // Load profile fragment
+                // Load home fragment
                 getSupportFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.frag_home, HomeFragment.newInstance("",""))
@@ -100,6 +100,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         .replace(R.id.frag_home, TripsFragment.newInstance("",""))
                         .commit();
                 break;
+            case R.id.nav_add_trip:
+                // show add trip fragment
+                if (getSupportFragmentManager().findFragmentById(R.id.frag_home) instanceof CreateTripFragment)
+                    break;
+
+                // Load profile fragment
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.frag_home, CreateTripFragment.newInstance("",""))
+                        .commit();
+                break;
             case R.id.nav_wallet:
                 // show wallet fragment
                 // if profile fragment is already loaded, then return
@@ -110,6 +121,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.frag_home, WalletFragment.newInstance("",""))
+                        .commit();
+                break;
+            case R.id.nav_dev:
+                // show dev fragment
+                // if dev fragment is already loaded, then return
+                if (getSupportFragmentManager().findFragmentById(R.id.frag_home) instanceof DeveloperFragment)
+                    break;
+
+                // Load dev fragment
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.frag_home, DeveloperFragment.newInstance("",""))
                         .commit();
                 break;
             case R.id.nav_profile:
@@ -124,27 +147,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         .replace(R.id.frag_home, ProfileFragment.newInstance("",""))
                         .commit();
                 break;
+            case R.id.nav_passenger:
+                Intent intentPassenger = new Intent(this, com.example.calmacar.passenger.view.HomeActivity.class);
+                startActivity(intentPassenger);
+                finish();
+                break;
             case R.id.nav_logout:
                 // Logout user
                 AuthManager.getInstance().logout();
                 Intent intentLogout = new Intent(this, MainActivity.class);
                 startActivity(intentLogout);
-                finish();
-                break;
-            case R.id.nav_add_trip:
-                // show add trip fragment
-                if (getSupportFragmentManager().findFragmentById(R.id.frag_home) instanceof CreateTripFragment)
-                    break;
-
-                // Load profile fragment
-                getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .replace(R.id.frag_home, CreateTripFragment.newInstance("",""))
-                        .commit();
-                break;
-            case R.id.nav_passenger:
-                Intent intentPassenger = new Intent(this, com.example.calmacar.passenger.view.HomeActivity.class);
-                startActivity(intentPassenger);
                 finish();
                 break;
         }

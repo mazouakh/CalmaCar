@@ -87,7 +87,7 @@ public class WalletFragment extends Fragment {
         btn_requestPayment = view.findViewById(R.id.btn_requestPayment);
 
         // UpdateUI
-        tripsManager.updateDriverCompletedTripsListView(
+        tripsManager.displayDriverCompletedTrips(
                 getActivity(),
                 lv_completedTrips);
 

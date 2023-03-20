@@ -39,4 +39,16 @@
             </group>
         </menu>
     </item>
+
+    <item
+        android:title="Developer">
+    <menu>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_dev"
+                android:title="Utils"
+                android:icon="@drawable/ic_utils"/>
+        </group>
+    </menu>
+    </item>
 </menu>
