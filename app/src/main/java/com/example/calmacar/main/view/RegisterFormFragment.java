@@ -35,10 +35,9 @@ public class RegisterFormFragment extends Fragment {
     private String mParam2;
 
     // UI elements
-    Button btn_signup;
     TextView tv_alreadyMember;
     EditText et_lastname, et_firstname, et_email, et_password, et_phone;
-    ImageView img_ic_pwd;
+    ImageView img_ic_pwd, btn_signup;
 
     public RegisterFormFragment() {
         // Required empty public constructor

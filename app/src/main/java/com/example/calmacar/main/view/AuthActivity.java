@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AuthActivity extends AppCompatActivity {
 
-    TextView title;
+//    TextView title;
     String userType;
 
     FirebaseAuth authProfile;
@@ -35,17 +35,17 @@ public class AuthActivity extends AppCompatActivity {
         mAuthManager = AuthManager.getInstance();
 
         // Hooks
-        title = findViewById(R.id.tv_title);
+//        title = findViewById(R.id.tv_title);
 
         // Firebase
         authProfile = FirebaseAuth.getInstance();
 
         // Set the title of the activity based on user type
         userType = getIntent().getStringExtra("EXTRA_USERTYPE");
-        if (userType != null)
-            title.setText(userType.toUpperCase());
-        else
-            title.setText("UNKNOWN");
+//        if (userType != null)
+//            title.setText(userType.toUpperCase());
+//        else
+//            title.setText("UNKNOWN");
 
         // displaying login fragment
         getSupportFragmentManager().beginTransaction()

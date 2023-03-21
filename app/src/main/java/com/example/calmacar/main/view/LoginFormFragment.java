@@ -35,10 +35,9 @@ public class LoginFormFragment extends Fragment {
     private String mParam2;
 
     // UI elements
-    Button btn_login;
     TextView tv_notMember;
     EditText et_email, et_password;
-    ImageView img_ic_pwd;
+    ImageView img_ic_pwd, btn_login;
 
     public LoginFormFragment() {
         // Required empty public constructor

@@ -5,90 +5,110 @@
     android:layout_height="match_parent"
     tools:context=".main.view.LoginFormFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginVertical="10dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textAllCaps="true"
-            android:text="Connexion"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="20dp"
-            android:text="Heureux De Vous Revoir"/>
-
-
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginVertical="10dp"
-            android:inputType="textEmailAddress"
-            android:hint="Email"/>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <EditText
-                android:id="@+id/et_password"
-                android:layout_width="0dp"
-                android:layout_weight="8"
-                android:layout_height="50dp"
-                android:layout_marginVertical="10dp"
-                android:inputType="textPassword"
-                android:hint="Mot de passe"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
             <ImageView
-                android:id="@+id/img_ic_pwd"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:id="@+id/img_background"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_eye_closed"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/img_background_login"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_bienvenue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue"
+                    android:textAllCaps="true"
+                    android:text="Bienvenue"/>
+                <TextView
+                    android:id="@+id/tv_heureux"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_below="@+id/tv_bienvenue"
+                    android:textSize="20dp"
+                    android:text="Heureux De Vous Revoir"/>
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_below="@+id/tv_heureux"
+                    android:inputType="textEmailAddress"
+                    android:hint="Email"/>
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="340dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/et_email"
+                    android:layout_marginVertical="10dp"
+                    android:inputType="textPassword"
+                    android:hint="Mot de passe"/>
+                <ImageView
+                    android:id="@+id/img_ic_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_toRightOf="@id/et_password"
+                    android:layout_below="@id/et_email"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_eye_closed"/>
+                <ImageView
+                    android:id="@+id/btn_login"
+                    android:layout_width="150px"
+                    android:layout_height="150px"
+                    android:layout_below="@+id/et_password"
+                    android:layout_marginVertical="10dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/img_connecter"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_login"
+                    android:layout_centerHorizontal="true">
+                    <TextView
+                        android:id="@+id/tv_pasencoremembre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pas encore membre? "
+                        android:gravity="center"/>
+                    <TextView
+                        android:id="@+id/tv_notMember"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/btn_login"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_toRightOf="@id/tv_pasencoremembre"
+                        android:text="Inscrivez vous"
+                        android:textColor="@color/blue" />
+                </LinearLayout>
+            </RelativeLayout>
+
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
-            android:text="Se connecter"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pas encore membre? "
-                android:gravity="center"/>
-            <TextView
-                android:id="@+id/tv_notMember"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Inscrivez vous"
-                android:textColor="@color/blue" />
-        </LinearLayout>
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>
