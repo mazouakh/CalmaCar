@@ -4,19 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".passenger.view.ReservationsHistoryFragment">
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ly_up3"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/img_background_home"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:text="Liste de réservation"
+            android:layout_margin="20dp"/>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/ly_up3"
+        android:padding="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
             android:textSize="20sp"
             android:layout_gravity="start"
-            android:text="Vos réservation à venir : "/>
+            android:text="Les réservations à venir : "/>
 
         <ListView
             android:id="@+id/lv_bookedTrips"
@@ -30,8 +53,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
             android:layout_gravity="start"
-            android:text="Vos anciennes réservation : "/>
+            android:text="Les anciennes réservation : "/>
 
         <ListView
             android:id="@+id/lv_completedTrips"
@@ -40,6 +65,6 @@
             android:layout_weight="1"
             android:layout_marginTop="10dp"/>
 
-    </LinearLayout>
-
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>

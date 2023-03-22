@@ -4,15 +4,30 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="20dp"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
     tools:context=".passenger.view.TripsDetailsActivity">
     <LinearLayout
+        android:id="@+id/ly_up1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:background="@drawable/img_background_home"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:text="vos trajet"
+        android:layout_margin="20dp"/>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/ly"
+        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="90dp"
         android:gravity="center"
         >
     <TextView
@@ -26,9 +41,10 @@
         android:id="@+id/ly_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="20dp"
         android:layout_below="@id/ly"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         >
         <TextView
             android:id="@+id/tv_departCity"
@@ -41,7 +57,7 @@
             android:id="@+id/tv_arrivalCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:textSize="20sp"
             android:text="Paris"/>
     </LinearLayout>
@@ -50,8 +66,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="20dp"
         android:layout_below="@id/ly"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_alignParentRight="true">
         <TextView
             android:id="@+id/tv_departTime"
@@ -64,7 +81,7 @@
             android:id="@+id/tv_arrivalTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:textSize="20sp"
             android:text="20:00"/>
     </LinearLayout>
@@ -72,8 +89,9 @@
         android:id="@+id/ly_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="20dp"
         android:layout_below="@id/ly_1"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         >
         <TextView
             android:id="@+id/tv_price"
@@ -86,8 +104,9 @@
         android:id="@+id/ly_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="20dp"
         android:layout_below="@id/ly_3"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="20dp">
         <TextView
             android:id="@+id/tv_tripDescription"
             android:layout_width="match_parent"
@@ -100,7 +119,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ly_4"
-        android:layout_marginTop="30dp"
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         >
         <TextView

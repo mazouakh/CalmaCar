@@ -5,20 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center|top"
     tools:context=".passenger.view.TripsSearchResultActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order by : "
-        android:layout_gravity="start"
-        android:layout_marginLeft="30dp"/>
+        <LinearLayout
+            android:id="@+id/ly_up4"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:background="@drawable/img_background_home"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:text="Résultats de recherche"
+                android:layout_margin="20dp"/>
+
+        </LinearLayout>
 
     <RadioGroup
         android:id="@+id/r_grp_orderBy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_up4"
         android:orientation="horizontal">
 
         <RadioButton
@@ -49,14 +65,20 @@
     </RadioGroup>
 
     <TextView
+        android:id="@+id/tv_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="30dp"
-        android:text="RESULT"/>
+        android:layout_below="@+id/r_grp_orderBy"
+        android:paddingLeft="20dp"
+        android:textSize="30dp"
+        android:textColor="@color/blue"
+        android:text="Liste des trajets :"/>
 
     <ListView
         android:id="@+id/lv_searchResult"
         android:layout_width="match_parent"
+        android:layout_below="@+id/tv_list"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        />
+    </RelativeLayout>
 </LinearLayout>
