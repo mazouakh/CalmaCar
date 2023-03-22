@@ -36,12 +36,12 @@ public class CreateTripFragment extends Fragment {
     private String mParam2;
 
     // References
-    private Button btn_addTrip, btn_date, btn_startTime, btn_endTime;
-    private EditText et_startCity, et_endCity, et_price, et_description;
-    private TripsManager tripsManager;
-    private PickerManager pickerManager;
-    private Validator validator;
-    private Formatter formatter;
+    Button btn_addTrip, btn_date, btn_startTime, btn_endTime;
+    EditText et_startCity, et_endCity, et_price, et_description;
+    TripsManager tripsManager;
+    PickerManager pickerManager;
+    Validator validator;
+    Formatter formatter;
 
     public CreateTripFragment() {
         // Required empty public constructor

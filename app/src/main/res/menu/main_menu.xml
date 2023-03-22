@@ -41,6 +41,7 @@
     </item>
 
     <item
+        android:id="@+id/nav_devSection"
         android:title="Developer">
     <menu>
         <group android:checkableBehavior="single">

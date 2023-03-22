@@ -128,8 +128,7 @@ public class ProfileFragment extends Fragment {
                 userID,
                 et_firstname.getText().toString(),
                 et_lastname.getText().toString(),
-                et_phone.getText().toString(),
-                ((HomeActivity) getActivity()).getUserType());
+                et_phone.getText().toString());
 
         // finding the user in database and updating it
         registeredUsersReference.child(userID).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {

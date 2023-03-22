@@ -65,6 +65,7 @@
                         android:layout_height="50dp"
                         android:layout_marginVertical="10dp"
                         android:hint="Nom"
+                        android:inputType="text"
                         />
                     <EditText
                         android:id="@+id/et_firstname"
@@ -73,7 +74,8 @@
                         android:layout_height="50dp"
                         android:layout_marginVertical="10dp"
                         android:layout_toRightOf="@+id/et_nom"
-                        android:hint="Préom"
+                        android:hint="Prénom"
+                        android:inputType="text"
                         />
                 </LinearLayout>
                 <EditText
@@ -90,7 +92,7 @@
                     android:layout_height="50dp"
                     android:layout_marginVertical="10dp"
                     android:layout_below="@+id/et_email"
-                    android:inputType="textEmailAddress"
+                    android:inputType="phone"
                     android:hint="Numéro de telephone"/>
                 <EditText
                     android:id="@+id/et_password"

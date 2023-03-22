@@ -77,11 +77,12 @@ public class Trip implements Parcelable {
     public boolean isOutdated() {
         // formatting the trip date into a comparable format
         Formatter formatter = Formatter.getInstance();
-        int[] dateInts = formatter.splitDateToInts(date);
-        String tripDate =  dateInts[2] + "-" + dateInts[1] + 1 + "-" + dateInts[0];
+        int[] dateInts = formatter.splitDateToInts(this.getDate());
+        int[] timeInts = formatter.splitTimeToInts(this.getEndTime());
+        String tripDate =  dateInts[2] + "-" + (dateInts[1] + 1) + "-" + dateInts[0] + "-" + timeInts[0] + "-" + timeInts[1];
 
         // converting into a date object
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm");
 
         boolean outdated = false;
         Date strDate;

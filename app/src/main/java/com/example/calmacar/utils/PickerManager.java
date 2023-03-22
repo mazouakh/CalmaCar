@@ -12,8 +12,8 @@ import java.util.Calendar;
 public class PickerManager {
 
     private static PickerManager instance;
-    private final TimeManager mTimeManager;
-    private Formatter mFormatter;
+    final TimeManager mTimeManager;
+    Formatter mFormatter;
 
     private PickerManager(){
         mFormatter = Formatter.getInstance();

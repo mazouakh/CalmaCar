@@ -33,7 +33,7 @@ public class ReservationsHistoryFragment extends Fragment {
 
     // References
     ListView lv_bookedTrips, lv_completedTrips;
-    private TripsManager mTripsManager;
+    TripsManager mTripsManager;
 
     public ReservationsHistoryFragment() {
         // Required empty public constructor

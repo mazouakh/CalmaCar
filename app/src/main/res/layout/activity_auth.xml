@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/frag_auth_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>-
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

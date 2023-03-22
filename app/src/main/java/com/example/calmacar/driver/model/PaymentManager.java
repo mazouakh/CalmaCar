@@ -23,11 +23,11 @@ import java.util.Map;
 public class PaymentManager {
     private static PaymentManager instance;
 
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mDb;
-    private DatabaseReference completedTripsReference, paymentsReference;
+     FirebaseAuth mAuth;
+     FirebaseDatabase mDb;
+     DatabaseReference completedTripsReference, paymentsReference;
 
-    private Balance mBalance;
+     Balance mBalance;
 
 
 

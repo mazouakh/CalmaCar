@@ -15,7 +15,7 @@ public class UserManager {
     private static final String TAG = "UserManager";
     private static UserManager instance;
 
-    private DatabaseReference registeredUsersReference;
+     DatabaseReference registeredUsersReference;
 
     private UserManager(){
         registeredUsersReference = FirebaseDatabase.getInstance().getReference("Registered Users");

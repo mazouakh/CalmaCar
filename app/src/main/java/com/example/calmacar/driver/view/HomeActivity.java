@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 
@@ -18,6 +19,7 @@ import com.example.calmacar.main.view.MainActivity;
 import com.example.calmacar.common.view.ProfileFragment;
 import com.example.calmacar.R;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,10 +28,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-
-    public String getUserType() {
-        return userType;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +48,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        // hide developer tools
+        if (!FirebaseAuth.getInstance().getUid().equals(getString(R.string.developer_ID)))
+            navigationView.getMenu().findItem(R.id.nav_devSection).setVisible(false);
 
         // Initialize first fragment
         getSupportFragmentManager().beginTransaction()

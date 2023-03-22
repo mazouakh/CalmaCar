@@ -28,13 +28,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AuthManager {
-
-
+    private static AuthManager instance;
     FirebaseAuth mAuth;
     FirebaseDatabase mDB;
     DatabaseReference registeredUsersReference;
 
-    public AuthManager(){
+    private AuthManager(){
         // Firebase
         mAuth = FirebaseAuth.getInstance();
         mDB = FirebaseDatabase.getInstance();
@@ -42,7 +41,6 @@ public class AuthManager {
         registeredUsersReference = mDB.getReference("Registered Users");
     }
 
-    static AuthManager instance;
     public static AuthManager getInstance(){
         if (instance == null){
             instance = new AuthManager();
@@ -188,6 +186,18 @@ return;
         return true;
     }
 
+    public boolean isUserLoggedIn(){
+        return mAuth.getCurrentUser() != null;
+    }
+
+    public void redirectToApp(Context ctx, String userType){
+        Intent intent = new Intent(ctx, userType.equals("Conducteur") ? HomeActivity.class : com.example.calmacar.passenger.view.HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("EXTRA_USERTYPE", userType);
+        ((AuthActivity) ctx).finish();
+        ctx.startActivity(intent);
+    }
+
     private void showEmailNotVerifiedAlertDialogue(Context ctx) {
         // Crating the builder
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
@@ -226,13 +236,5 @@ return;
 
         // Create & show the AlertDialog
         builder.create().show();
-    }
-
-    public void redirectToApp(Context ctx, String userType){
-        Intent intent = new Intent(ctx, userType.equals("Conducteur") ? HomeActivity.class : com.example.calmacar.passenger.view.HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("EXTRA_USERTYPE", userType);
-        ((AuthActivity) ctx).finish();
-        ctx.startActivity(intent);
     }
 }

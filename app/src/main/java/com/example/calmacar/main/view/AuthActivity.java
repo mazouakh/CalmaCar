@@ -18,10 +18,7 @@ public class AuthActivity extends AppCompatActivity {
 
 //    TextView title;
     String userType;
-
-    FirebaseAuth authProfile;
     AuthManager mAuthManager;
-    private boolean userOpenedMailApp = false;
 
     // Receivers
     BroadcastReceiver loginReceiver, signupReceiver;
@@ -33,12 +30,6 @@ public class AuthActivity extends AppCompatActivity {
 
         // References
         mAuthManager = AuthManager.getInstance();
-
-        // Hooks
-//        title = findViewById(R.id.tv_title);
-
-        // Firebase
-        authProfile = FirebaseAuth.getInstance();
 
         // Set the title of the activity based on user type
         userType = getIntent().getStringExtra("EXTRA_USERTYPE");
@@ -77,10 +68,9 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is already logged then, then redirect to dashboard directly and kill AuthActivity
 
         // check if there is a user logged in
-        if (authProfile.getCurrentUser() == null)
+        if (!mAuthManager.isUserLoggedIn())
             return;
 
         // Check that his email is verified

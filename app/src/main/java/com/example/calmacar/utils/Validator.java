@@ -11,9 +11,10 @@ import android.widget.EditText;
  */
 public class Validator {
 
-    public Validator(){}
+    private static Validator instance;
 
-    static Validator instance;
+    private Validator(){}
+
     public static Validator getInstance(){
         if (instance == null){
             instance = new Validator();

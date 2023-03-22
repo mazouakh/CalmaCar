@@ -34,12 +34,12 @@ public class TripsSearchFragment extends Fragment {
     private String mParam2;
 
     // References
-    private EditText et_startCity, et_endCity;
-    private Button btn_date, btn_startTime, btn_search;
-    private PickerManager mPickerManager;
-    private TripsManager mTripsManager;
-    private Validator mValidator;
-    private Formatter mFormatter;
+    EditText et_startCity, et_endCity;
+    Button btn_date, btn_startTime, btn_search;
+    PickerManager mPickerManager;
+    TripsManager mTripsManager;
+    Validator mValidator;
+    Formatter mFormatter;
 
     public TripsSearchFragment() {
         // Required empty public constructor
