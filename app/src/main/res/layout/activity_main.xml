@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:layout_gravity="center"
-    android:background="@color/teal_200"
+    android:background="@drawable/img_main_background"
     tools:context=".main.view.MainActivity">
 
 
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="CalmaCar"
         android:textColor="@color/white"
-        android:textSize="50sp"/>
+        android:textSize="70sp"/>
 
     <TextView
         android:id="@+id/textView"
@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:textColor="@color/white"
+        android:layout_marginBottom="300dp"
         android:text="Covoiturage au calme" />
 
 
@@ -33,7 +34,7 @@
         android:layout_marginTop="50dp"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:text="Vous etes : "/>
+        android:text="Vous êtes"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
